@@ -104,13 +104,13 @@ bool CShopItem::CanBuy(int ClientId)
 	char aBuf[128];
 	if(pPlayer->GetLevel() < NeededLevel(ClientId))
 	{
-		str_format(aBuf, sizeof(aBuf), "You need to be Level %d to buy '%s'", NeededLevel(ClientId), Name());
+		str_format(aBuf, sizeof(aBuf), "Для покупки тебе нужен уровень %d для '%s'", NeededLevel(ClientId), Name());
 		GameServer()->SendChatTarget(ClientId, aBuf);
 		return false;
 	}
 	if(pPlayer->m_Account.m_Money < Price(ClientId))
 	{
-		str_format(aBuf, sizeof(aBuf), "You don't have enough money! You need %s money.", PriceStr(ClientId));
+		str_format(aBuf, sizeof(aBuf), "У тебя не достаточно денег! Нужно %s монет.", PriceStr(ClientId));
 		GameServer()->SendChatTarget(ClientId, aBuf);
 		return false;
 	}
@@ -139,140 +139,32 @@ IServer *CShop::Server()
 
 void CShop::OnInit()
 {
-	m_vItems.push_back(new CShopItemRainbow(
-		"rainbow",
-		"1 500",
-		5,
-		"Rainbow will make your tee change the color very fast.",
-		"dead",
-		m_pGameContext));
-	m_vItems.push_back(new CShopItemBloody(
-		"bloody",
-		"3 500",
-		15,
-		"Bloody will give your tee a permanent kill effect.",
-		"dead",
-		m_pGameContext));
-	m_vItems.push_back(new CShopItemChidraqul(
-		"chidraqul",
-		"250",
-		2,
-		"Chidraqul is a minigame by ChillerDragon.\n"
-		"More information about this game coming soon.",
-		"disconnect",
-		m_pGameContext));
-	m_vItems.push_back(new CShopItemShit(
-		"shit",
-		"5",
-		0,
-		"Shit is a fun item. You can use to '/poop' on other players.\n"
-		"You can also see your shit amount in your '/profile'.",
-		"forever",
-		m_pGameContext));
-	m_vItems.push_back(new CShopItemRoomKey(
-		"room_key",
-		g_Config.m_SvRoomPrice,
-		16,
-		"If you have the room key you can enter the bank room.\n"
-		"It's under the spawn and there is a money tile.",
-		"disconnect",
-		m_pGameContext));
-	m_vItems.push_back(new CShopItemPolice(
-		"police",
-		"100 000",
-		18,
-		"Police officers get help from the police bot.\n"
-		"For more information about the specific police ranks\n"
-		"please visit '/policeinfo'.",
-		"forever",
-		m_pGameContext));
-	m_vItems.push_back(new CShopItemTaser(
-		"taser",
-		"50 000",
-		-1,
-		"Taser replaces your unfreeze rifle with a rifle that freezes\n"
-		"other tees. You can toggle it using '/taser <on/off>'.\n"
-		"For more information about the taser and your taser stats,\n"
-		"please visit '/taser info'.",
-		"forever",
-		m_pGameContext));
-	m_vItems.push_back(new CShopItemPvpArenaTicket(
-		"pvp_arena_ticket",
-		"150",
-		0,
-		"You can join the pvp arena using '/pvp_arena join' if you have a ticket.",
-		"forever",
-		m_pGameContext));
-	m_vItems.push_back(new CShopItemNinjaJetpack(
-		"ninjajetpack",
-		"10 000",
-		21,
-		"It will make your jetpack gun be a ninja.\n"
-		"Toggle it using '/ninjajetpack'.",
-		"forever",
-		m_pGameContext));
-	m_vItems.push_back(new CShopItemSpawnShotgun(
-		"spawn_shotgun",
-		"600 000",
-		33,
-		"You will have shotgun if you respawn.\n"
-		"For more information about spawn weapons,\n"
-		"please visit '/spawnweaponsinfo'.",
-		"forever",
-		m_pGameContext));
-	m_vItems.push_back(new CShopItemSpawnGrenade(
-		"spawn_grenade",
-		"600 000",
-		33,
-		"You will have grenade if you respawn.\n"
-		"For more information about spawn weapons,\n"
-		"please visit '/spawnweaponsinfo'.",
-		"forever",
-		m_pGameContext));
-	m_vItems.push_back(new CShopItemSpawnRifle(
-		"spawn_rifle",
-		"600 000",
-		33,
-		"You will have rifle if you respawn.\n"
-		"For more information about spawn weapons,\n"
-		"please visit '/spawnweaponsinfo'.",
-		"forever",
-		m_pGameContext));
-	m_vItems.push_back(new CShopItemSpookyGhost(
-		"spooky_ghost",
-		"1 000 000",
-		1,
-		"Using this item you can hide from other players behind bushes.\n"
-		"If your ghost is activated you will be able to shoot plasma\n"
-		"projectiles. For more information please visit '/spookyghostinfo'.",
-		"forever",
-		m_pGameContext));
 	m_vItems.push_back(new CShopItemShotgun(
 		"shotgun",
 		"1 000",
 		5,
-		"Gives you a regular shotgun weapon.\n",
+		"Дает тебе шотган.\n",
 		"dead",
 		m_pGameContext));
 	m_vItems.push_back(new CShopItemGrenade(
 		"grenade",
 		"1 000",
 		5,
-		"Gives you a regular grenade launcher.\n",
+		"Дает тебе ракетницу.\n",
 		"dead",
 		m_pGameContext));
 	m_vItems.push_back(new CShopItemLaser(
 		"laser",
 		"1 000",
 		5,
-		"Gives you a regular laser rifle weapon.\n",
+		"Дает тебе лазер.\n",
 		"dead",
 		m_pGameContext));
 	m_vItems.push_back(new CShopItemNinja(
 		"ninja",
 		"1 000",
 		5,
-		"Gives you a ninja weapon.\n",
+		"Дает тебе нидзю.\n",
 		"dead",
 		m_pGameContext));
 }
@@ -616,12 +508,12 @@ void CShop::ShowShopMotdCompressed(int ClientId)
 		"***************************\n"
 		"%s | %s | %s | %s\n" // Item | Price | Level | Owned until
 		"-------+------+--------+-------\n",
-		GameServer()->Loc("S H O P", ClientId),
+		GameServer()->Loc("МАГАЗИН", ClientId),
 		GameServer()->Loc("usage", ClientId),
-		GameServer()->Loc("itemname", ClientId),
+		GameServer()->Loc("Название", ClientId),
 		GameServer()->Loc("Item", ClientId),
-		GameServer()->Loc("Price", ClientId),
-		GameServer()->Loc("Level", ClientId),
+		GameServer()->Loc("Цена", ClientId),
+		GameServer()->Loc("Лвл", ClientId),
 		GameServer()->Loc("Owned until", ClientId));
 	for(auto &Item : m_vItems)
 	{
@@ -710,10 +602,10 @@ void CShop::ConfirmPurchase(int ClientId)
 		"f3 - %s\n" // yes
 		"f4 - %s\n\n" // no
 		"***************************\n",
-		GameServer()->Loc("S H O P", ClientId),
-		GameServer()->Loc("Are you sure you want to buy this item?", ClientId),
-		GameServer()->Loc("yes", ClientId),
-		GameServer()->Loc("no", ClientId));
+		GameServer()->Loc("МАГАЗИН", ClientId),
+		GameServer()->Loc("Ты уверен, что хочешь купить этот товар?", ClientId),
+		GameServer()->Loc("да", ClientId),
+		GameServer()->Loc("нет", ClientId));
 
 	m_pGameContext->AbuseMotd(aBuf, ClientId);
 	m_PurchaseState[ClientId] = 2;
@@ -735,7 +627,7 @@ void CShop::PurchaseEnd(int ClientId, bool IsCancel)
 			"***************************\n\n"
 			"%s\n\n"
 			"***************************\n",
-			GameServer()->Loc("S H O P", ClientId),
+			GameServer()->Loc("МАГАЗИН", ClientId),
 			aResult);
 
 		m_pGameContext->AbuseMotd(aBuf, ClientId);
@@ -837,12 +729,12 @@ void CShop::ShopWindow(int Dir, int ClientId)
 			"%s", // If you want to buy an item press f3.
 			GameServer()->Loc("S H O P", ClientId),
 			GameServer()->Loc(
-				"Welcome to the shop! If you need help, use '/shop help'.\n\n"
-				"By shooting to the right you go one site forward,\n"
-				"and by shooting left you go one site backwards.\n\n"
-				"If you need more help, visit '/shop help'.",
+				"Добро пожаловать в магазин!'.\n\n"
+				"Стреляя вправо, ты листаешь предметы вперед,\n"
+				"и стреляя влево, ты возвращаешься на прошлый предмет назад.\n\n"
+				"Хороших покупок!.",
 				ClientId),
-			GameServer()->Loc("If you want to buy an item press f3.", ClientId));
+			GameServer()->Loc("Если ты хочешь купить какой-либо товар нажимай F3.", ClientId));
 		m_pGameContext->AbuseMotd(aMotd, ClientId);
 		return;
 	}
@@ -868,16 +760,16 @@ void CShop::ShopWindow(int Dir, int ClientId)
 			"***************************\n"
 			"%s\n\n\n" // If you want to buy an item press f3.
 			"              ~ %d/%d ~              ",
-			GameServer()->Loc("S H O P", ClientId),
+			GameServer()->Loc("МАГАЗИН", ClientId),
 			Item->Title(),
-			GameServer()->Loc("Needed level", ClientId),
+			GameServer()->Loc("Нужный лвл", ClientId),
 			Item->NeededLevelStr(ClientId),
-			GameServer()->Loc("Price", ClientId),
+			GameServer()->Loc("Цена", ClientId),
 			Item->PriceStr(ClientId),
-			GameServer()->Loc("Time", ClientId),
+			GameServer()->Loc("Время", ClientId),
 			Item->OwnUntilLong(),
 			Item->Description(),
-			GameServer()->Loc("If you want to buy an item press f3.", ClientId),
+			GameServer()->Loc("Если ты хочешь купить какой-либо товар нажимай F3.", ClientId),
 			m_Page[ClientId], MaxShopPages);
 	}
 	m_pGameContext->AbuseMotd(aMotd, ClientId);
@@ -890,7 +782,7 @@ void CShop::BuyItem(int ClientId, const char *pItemName)
 
 	if((g_Config.m_SvShopState == 1) && !IsInShop(ClientId))
 	{
-		GameServer()->SendChatLoc(ClientId, "You have to be in the shop to buy some items.");
+		GameServer()->SendChatLoc(ClientId, "Ты должен быть в магазине, чтобы купить какие-то товары.");
 		return;
 	}
 	for(auto &Item : m_vItems)
