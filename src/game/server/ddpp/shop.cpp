@@ -87,12 +87,12 @@ const char *CShopItem::Title()
 const char *CShopItem::OwnUntilLong()
 {
 	if(!str_comp(m_aOwnUntil, "dead"))
-		return "You own this item until you die";
+		return "Пока не сдохнешь";
 	if(!str_comp(m_aOwnUntil, "disconnect"))
-		return "You own this item until\n"
-		       "   you disconnect";
-	if(!str_comp(m_aOwnUntil, "forever"))
-		return "You own this item forever";
+		return "До первого\n"
+		       "   выхода с сервера";
+	if(!str_comp(m_aOwnUntil, "навсегда"))
+		return "Получаешь предмет навсегда";
 	return "";
 }
 
@@ -620,7 +620,7 @@ void CShop::PurchaseEnd(int ClientId, bool IsCancel)
 	if(IsCancel)
 	{
 		char aBuf[256];
-		str_copy(aResult, "You canceled the purchase.", sizeof(aResult));
+		str_copy(aResult, "Ты отменил покупку.", sizeof(aResult));
 		str_format(aBuf, sizeof(aBuf),
 			"***************************\n"
 			"        ~  %s  ~           \n" // S H O P
