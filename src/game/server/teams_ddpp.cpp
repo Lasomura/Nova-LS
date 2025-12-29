@@ -18,11 +18,11 @@ void CGameTeams::OnFinishDDPP(CPlayer *pPlayer, float Time)
 		if(!pPlayer->IsMaxLevel())
 		{
 			pPlayer->GiveXP(250);
-			GameServer()->SendChatTarget(pPlayer->GetCid(), "+250 xp (finish race)");
+			GameServer()->SendChatTarget(pPlayer->GetCid(), "+250 опыта (финиш гонки)");
 			if(g_Config.m_SvFinishEvent == 1)
 			{
 				pPlayer->GiveXP(500);
-				GameServer()->SendChatTarget(pPlayer->GetCid(), "+500 xp (Event-bonus)");
+				GameServer()->SendChatTarget(pPlayer->GetCid(), "+500 опыта (бонус события)");
 			}
 		}
 	}

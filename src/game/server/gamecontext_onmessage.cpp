@@ -12,33 +12,33 @@ bool CGameContext::AbortTeamChange(int ClientId, CPlayer *pPlayer)
 {
 	if(IsMinigame(ClientId))
 	{
-		SendChatTarget(ClientId, "[MINIGAMES] You can't change team while playing minigames or being in jail.");
+		SendChatTarget(ClientId, "[МИНИ-ИГРЫ] Нельзя менять команду во время мини-игры или находясь в тюрьме.");
 		return true;
 	}
 
 	if(m_apPlayers[ClientId]->m_SpawnBlocks > 3)
 	{
-		SendChatTarget(ClientId, "[SPAWNBLOCK] You can't change team because you spawnblock too much. Try again later.");
+		SendChatTarget(ClientId, "[SPAWNBLOCK] Нельзя сменить команду: слишком много спавнблоков. Попробуйте позже.");
 		return true;
 	}
 
 	if(m_apPlayers[ClientId]->m_IsBlockWaving)
 	{
-		SendChatTarget(ClientId, "[BlockWave] you can't change team while block waving. Try '/blockwave leave'");
+		SendChatTarget(ClientId, "[BlockWave] Нельзя менять команду во время blockwave. Используйте '/blockwave leave'");
 		return true;
 	}
 
 	//zCatch survival LMS ChillerDragon Instagib grenade rifle
 	if(g_Config.m_SvInstagibMode == 2 || g_Config.m_SvInstagibMode == 4) //gLMS iLMS
 	{
-		SendChatTarget(ClientId, "You can't join running survival games. Wait until the round ends.");
+		SendChatTarget(ClientId, "Нельзя присоединиться к уже идущему survival-раунду. Дождитесь окончания.");
 		return true;
 	}
 
 	if(pPlayer->m_GangsterBagMoney)
 	{
-		SendChatTarget(ClientId, "Make sure to empty your gangsterbag before disconnecting/spectating or you will lose it.");
-		SendChatTarget(ClientId, "or clear it yourself with '/gangsterbag clear'");
+		SendChatTarget(ClientId, "Перед выходом/наблюдением очистите gangsterbag, иначе потеряете деньги.");
+		SendChatTarget(ClientId, "или очистите сами командой '/gangsterbag clear'");
 		return true;
 	}
 	return false;
@@ -57,36 +57,36 @@ bool CGameContext::AbortKill(int ClientId, CPlayer *pPlayer, CCharacter *pChr)
 
 	if(m_apPlayers[ClientId]->m_IsBlockWaving && !pPlayer->m_IsBlockWaveWaiting)
 	{
-		SendChatTarget(ClientId, "[BlockWave] you can't selfkill while block waving. try '/blockwave leave'.");
+		SendChatTarget(ClientId, "[BlockWave] Нельзя самоубиться во время blockwave. Используйте '/blockwave leave'.");
 		return true;
 	}
 	if(m_apPlayers[ClientId]->m_SpawnBlocks > 3 && g_Config.m_SvSpawnBlockProtection == 2)
 	{
-		SendChatTarget(ClientId, "[SPAWNBLOCK] You can't selfkill because you spawnblock too much. Try again later.");
+		SendChatTarget(ClientId, "[SPAWNBLOCK] Нельзя самоубиться: слишком много спавнблоков. Попробуйте позже.");
 		return true;
 	}
 	if(!g_Config.m_SvAllowBombSelfkill && GetPlayerChar(ClientId) && GetPlayerChar(ClientId)->m_IsBombing)
 	{
-		SendChatTarget(ClientId, "[BOMB] selfkill protection activated. Try '/bomb leave' to leave and get the money back. All other ways of leaving the game are leading to lose your money.");
+		SendChatTarget(ClientId, "[BOMB] Защита от самоубийства активна. Используйте '/bomb leave' чтобы выйти и вернуть деньги. Любой другой способ выхода приведёт к потере денег.");
 		return true;
 	}
 	if(m_apPlayers[ClientId]->m_IsSurvivaling)
 	{
 		if(g_Config.m_SvSurvivalKillProtection == 2) //full on
 		{
-			SendChatTarget(ClientId, "[SURVIVAL] kill protection. '/survival leave' first to kill.");
+			SendChatTarget(ClientId, "[SURVIVAL] Защита от убийства. Сначала '/survival leave'.");
 			return true;
 		}
 		else if(g_Config.m_SvSurvivalKillProtection == 1 && !m_apPlayers[ClientId]->m_IsSurvivalLobby) //allowed in lobby
 		{
-			SendChatTarget(ClientId, "[SURVIVAL] kill protection. '/survival leave' first to kill.");
+			SendChatTarget(ClientId, "[SURVIVAL] Защита от убийства. Сначала '/survival leave'.");
 			return true;
 		}
 		//else == off
 	}
 	if(m_apPlayers[ClientId]->m_IsInstaArena_fng && pChr->m_FreezeTime)
 	{
-		SendChatTarget(ClientId, "[INSTA] You can't suicide in fng games while being frozen.");
+		SendChatTarget(ClientId, "[INSTA] Нельзя самоубиться в FNG, пока вы заморожены.");
 		return true;
 	}
 	return false;

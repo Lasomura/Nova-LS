@@ -239,13 +239,13 @@ void CGameContext::SetSpawnweapons(bool Active, int ClientId)
 	{
 		if(!g_Config.m_SvAllowSpawnWeapons)
 		{
-			SendChatTarget(ClientId, "Spawn weapons are deactivated by an administrator.");
+			SendChatTarget(ClientId, "Спавн-оружие отключено администратором.");
 			return;
 		}
 
 		if((!pPlayer->m_Account.m_SpawnWeaponShotgun) && (!pPlayer->m_Account.m_SpawnWeaponGrenade) && (!pPlayer->m_Account.m_SpawnWeaponRifle))
 		{
-			SendChatTarget(ClientId, "You don't have any spawn weapons.");
+			SendChatTarget(ClientId, "У вас нет спавн-оружия.");
 			return;
 		}
 	}
@@ -256,11 +256,11 @@ void CGameContext::SetSpawnweapons(bool Active, int ClientId)
 
 	if(!pPlayer->m_Account.m_UseSpawnWeapons)
 	{
-		SendChatTarget(ClientId, "Spawn weapons activated. Use '/spawnweapons' to toggle.");
+		SendChatTarget(ClientId, "Спавн-оружие включено. Используйте '/spawnweapons' для переключения.");
 	}
 	else
 	{
-		SendChatTarget(ClientId, "Spawn weapons deactivated. Use '/spawnweapons' to toggle.");
+		SendChatTarget(ClientId, "Спавн-оружие выключено. Используйте '/spawnweapons' для переключения.");
 	}
 
 	pPlayer->m_Account.m_UseSpawnWeapons = Active;
@@ -1044,7 +1044,7 @@ void CGameContext::StartAsciiAnimation(int viewerId, int CreatorId, int Medium)
 		return;
 	if(!m_apPlayers[CreatorId])
 	{
-		SendChatTarget(viewerId, "player not found.");
+		SendChatTarget(viewerId, "Игрок не найден.");
 		return;
 	}
 	//dont start new animation while old is running
@@ -1057,7 +1057,7 @@ void CGameContext::StartAsciiAnimation(int viewerId, int CreatorId, int Medium)
 	{
 		if(m_apPlayers[CreatorId]->m_Account.m_aAsciiPublishState[0] == '0')
 		{
-			SendChatTarget(viewerId, "ascii art not public.");
+			SendChatTarget(viewerId, "ASCII-арт не публичный.");
 			return;
 		}
 
@@ -1078,7 +1078,7 @@ void CGameContext::StartAsciiAnimation(int viewerId, int CreatorId, int Medium)
 	{
 		if(m_apPlayers[CreatorId]->m_Account.m_aAsciiPublishState[2] == '0')
 		{
-			SendChatTarget(viewerId, "ascii art not published on medium 2");
+			SendChatTarget(viewerId, "ASCII-арт не опубликован на medium 2");
 			return;
 		}
 	}
@@ -1328,31 +1328,31 @@ void CGameContext::ShowInstaStats(int RequestingId, int RequestedId) const
 		return;
 
 	char aBuf[128];
-	str_format(aBuf, sizeof(aBuf), "~~~ '%s's Grenade instagib ~~~", Server()->ClientName(pPlayer->GetCid()));
+	str_format(aBuf, sizeof(aBuf), "~~~ Инстагиб гранат '%s' ~~~", Server()->ClientName(pPlayer->GetCid()));
 	SendChatTarget(RequestingId, aBuf);
-	str_format(aBuf, sizeof(aBuf), "Kills: %d", pPlayer->m_Account.m_GrenadeKills);
+	str_format(aBuf, sizeof(aBuf), "Убийства: %d", pPlayer->m_Account.m_GrenadeKills);
 	SendChatTarget(RequestingId, aBuf);
-	str_format(aBuf, sizeof(aBuf), "Deaths: %d", pPlayer->m_Account.m_GrenadeDeaths);
+	str_format(aBuf, sizeof(aBuf), "Смерти: %d", pPlayer->m_Account.m_GrenadeDeaths);
 	SendChatTarget(RequestingId, aBuf);
-	str_format(aBuf, sizeof(aBuf), "Highest spree: %d", pPlayer->m_Account.m_GrenadeSpree);
+	str_format(aBuf, sizeof(aBuf), "Макс. серия: %d", pPlayer->m_Account.m_GrenadeSpree);
 	SendChatTarget(RequestingId, aBuf);
-	str_format(aBuf, sizeof(aBuf), "Total shots: %d", pPlayer->m_Account.m_GrenadeShots);
+	str_format(aBuf, sizeof(aBuf), "Всего выстрелов: %d", pPlayer->m_Account.m_GrenadeShots);
 	SendChatTarget(RequestingId, aBuf);
-	str_format(aBuf, sizeof(aBuf), "Shots without RJ: %d", pPlayer->m_Account.m_GrenadeShotsNoRJ);
+	str_format(aBuf, sizeof(aBuf), "Выстрелов без RJ: %d", pPlayer->m_Account.m_GrenadeShotsNoRJ);
 	SendChatTarget(RequestingId, aBuf);
-	str_format(aBuf, sizeof(aBuf), "Rocketjumps: %d", pPlayer->m_Account.m_GrenadeShots - pPlayer->m_Account.m_GrenadeShotsNoRJ);
+	str_format(aBuf, sizeof(aBuf), "Рокетджампы: %d", pPlayer->m_Account.m_GrenadeShots - pPlayer->m_Account.m_GrenadeShotsNoRJ);
 	SendChatTarget(RequestingId, aBuf);
 	//str_format(aBuf, sizeof(aBuf), "Failed shots (no kill, no rj): %d", pPlayer->m_GrenadeShots - (pPlayer->m_GrenadeShots - pPlayer->m_GrenadeShotsNoRJ) - pPlayer->m_Account.m_GrenadeKills); //can be negative with double and triple kills but this isnt a bug its a feature xd
 	//SendChatTarget(requestId, aBuf);
-	str_format(aBuf, sizeof(aBuf), "~~~ '%s's Rifle instagib ~~~", Server()->ClientName(pPlayer->GetCid()));
+	str_format(aBuf, sizeof(aBuf), "~~~ Инстагиб винтовки '%s' ~~~", Server()->ClientName(pPlayer->GetCid()));
 	SendChatTarget(RequestingId, aBuf);
-	str_format(aBuf, sizeof(aBuf), "Kills: %d", pPlayer->m_Account.m_RifleKills);
+	str_format(aBuf, sizeof(aBuf), "Убийства: %d", pPlayer->m_Account.m_RifleKills);
 	SendChatTarget(RequestingId, aBuf);
-	str_format(aBuf, sizeof(aBuf), "Deaths: %d", pPlayer->m_Account.m_RifleDeaths);
+	str_format(aBuf, sizeof(aBuf), "Смерти: %d", pPlayer->m_Account.m_RifleDeaths);
 	SendChatTarget(RequestingId, aBuf);
-	str_format(aBuf, sizeof(aBuf), "Highest spree: %d", pPlayer->m_Account.m_RifleSpree);
+	str_format(aBuf, sizeof(aBuf), "Макс. серия: %d", pPlayer->m_Account.m_RifleSpree);
 	SendChatTarget(RequestingId, aBuf);
-	str_format(aBuf, sizeof(aBuf), "Total shots: %d", pPlayer->m_Account.m_RifleShots);
+	str_format(aBuf, sizeof(aBuf), "Всего выстрелов: %d", pPlayer->m_Account.m_RifleShots);
 	SendChatTarget(RequestingId, aBuf);
 }
 
@@ -1365,13 +1365,13 @@ void CGameContext::ShowSurvivalStats(int RequestingId, int RequestedId)
 		return;
 
 	char aBuf[128];
-	str_format(aBuf, sizeof(aBuf), "~~~ '%s's survival stats ~~~", Server()->ClientName(pPlayer->GetCid()));
+	str_format(aBuf, sizeof(aBuf), "~~~ Статистика survival '%s' ~~~", Server()->ClientName(pPlayer->GetCid()));
 	SendChatTarget(RequestingId, aBuf);
-	str_format(aBuf, sizeof(aBuf), "Kills: %d", pPlayer->m_Account.m_SurvivalKills);
+	str_format(aBuf, sizeof(aBuf), "Убийства: %d", pPlayer->m_Account.m_SurvivalKills);
 	SendChatTarget(RequestingId, aBuf);
-	str_format(aBuf, sizeof(aBuf), "Deaths: %d", pPlayer->m_Account.m_SurvivalDeaths);
+	str_format(aBuf, sizeof(aBuf), "Смерти: %d", pPlayer->m_Account.m_SurvivalDeaths);
 	SendChatTarget(RequestingId, aBuf);
-	str_format(aBuf, sizeof(aBuf), "Wins: %d", pPlayer->m_Account.m_SurvivalWins);
+	str_format(aBuf, sizeof(aBuf), "Победы: %d", pPlayer->m_Account.m_SurvivalWins);
 	SendChatTarget(RequestingId, aBuf);
 }
 
@@ -1396,14 +1396,14 @@ void CGameContext::ShowDDPPStats(int RequestingId, int RequestedId)
 	str_format(aBuf, sizeof(aBuf), "--- %s's %s ---", Server()->ClientName(RequestedId), pStats);
 	SendChatTarget(RequestingId, aBuf);
 	if(pPlayer->GetLevel() == ACC_MAX_LEVEL)
-		str_format(aBuf, sizeof(aBuf), "%s[%" PRId64 "] ( MAX LEVEL ! )", pLevel, pPlayer->GetLevel());
+		str_format(aBuf, sizeof(aBuf), "%s[%" PRId64 "] ( МАКС. УРОВЕНЬ! )", pLevel, pPlayer->GetLevel());
 	else
 		str_format(aBuf, sizeof(aBuf), "%s[%" PRId64 "]", pLevel, pPlayer->GetLevel());
 	SendChatTarget(RequestingId, aBuf);
 	if(!pPlayer->IsLoggedIn())
-		str_format(aBuf, sizeof(aBuf), "Xp[%" PRId64 "] (%s)", pPlayer->GetXP(), Loc("not logged in", RequestingId));
+		str_format(aBuf, sizeof(aBuf), "Опыт[%" PRId64 "] (%s)", pPlayer->GetXP(), Loc("not logged in", RequestingId));
 	else
-		str_format(aBuf, sizeof(aBuf), "Xp[%" PRId64 "/%" PRId64 "]", pPlayer->GetXP(), pPlayer->GetNeededXP());
+		str_format(aBuf, sizeof(aBuf), "Опыт[%" PRId64 "/%" PRId64 "]", pPlayer->GetXP(), pPlayer->GetNeededXP());
 	SendChatTarget(RequestingId, aBuf);
 	str_format(aBuf, sizeof(aBuf), "%s[%" PRId64 "]", pMoney, pPlayer->GetMoney());
 	SendChatTarget(RequestingId, aBuf);
@@ -1454,7 +1454,7 @@ int CGameContext::ChillUpdateFileAcc(const char *pUsername, unsigned int Line, c
 
 	if(!std::ifstream(aBuf))
 	{
-		SendChatTarget(RequestingId, "[ACCOUNT] username not found.");
+		SendChatTarget(RequestingId, "[АККАУНТ] имя пользователя не найдено.");
 		Acc2File.close();
 		return -1; //return error code -1
 	}
@@ -1660,11 +1660,11 @@ void CGameContext::CheckDDPPshutdown()
 			if(players < g_Config.m_SvDDPPshutdownPlayers)
 			{
 				//SendChat(-1, TEAM_ALL, "[DDNet++] WARNING SERVER SHUTDOWN!");
-				CallVetoVote(-1, "shutdown server", "shutdown", "Update", "[DDNet++] do you want to update the server now?", 0);
+				CallVetoVote(-1, "остановить сервер", "shutdown", "Обновление", "[DDNet++] хотите обновить сервер сейчас?", 0);
 			}
 			else
 			{
-				SendChat(-1, TEAM_ALL, "[DDNet++] shutdown failed: too many players online.");
+				SendChat(-1, TEAM_ALL, "[DDNet++] остановка не удалась: слишком много игроков онлайн.");
 			}
 		}
 	}
@@ -1776,7 +1776,7 @@ void CGameContext::LogoutAllPlayersMessage()
 		{
 			dbg_msg("ddnet++", "logging out id=%d", Player->GetCid());
 			Player->Logout();
-			SendChatTarget(Player->GetCid(), "[ACCOUNT] you were logged out.");
+			SendChatTarget(Player->GetCid(), "[АККАУНТ] вы вышли из аккаунта.");
 		}
 	}
 }
@@ -1811,12 +1811,12 @@ void CGameContext::DDPP_SlowTick()
 			{
 				if(!m_apPlayers[pPlayer->m_QuestPlayerId])
 				{
-					SendChatTarget(PlayerId, "[QUEST] Looks like your quest destination left the server.");
+					SendChatTarget(PlayerId, "[КВЕСТ] Похоже, цель вашего квеста покинула сервер.");
 					QuestFailed(PlayerId);
 				}
 				else if(m_apPlayers[pPlayer->m_QuestPlayerId]->GetTeam() == TEAM_SPECTATORS)
 				{
-					SendChatTarget(PlayerId, "[QUEST] Looks like your quest destination is a spectator.");
+					SendChatTarget(PlayerId, "[КВЕСТ] Похоже, цель вашего квеста — зритель.");
 					QuestFailed(PlayerId);
 				}
 			}
@@ -1864,12 +1864,12 @@ void CGameContext::DDPP_SlowTick()
 	{
 		if(CountIngameHumans() >= g_Config.m_SvMinDoubleTilePlayers && MoneyDoubleEnoughPlayers) // MoneyTileDouble();  bla bla
 		{
-			SendChat(-1, TEAM_ALL, "The double-moneytile has been activated!");
+			SendChat(-1, TEAM_ALL, "Двойной moneytile активирован!");
 			MoneyDoubleEnoughPlayers = false;
 		}
 		if(CountIngameHumans() < g_Config.m_SvMinDoubleTilePlayers && !MoneyDoubleEnoughPlayers)
 		{
-			SendChat(-1, TEAM_ALL, "The double-moneytile has been deactivated!");
+			SendChat(-1, TEAM_ALL, "Двойной moneytile деактивирован!");
 			MoneyDoubleEnoughPlayers = true;
 		}
 	}
@@ -1910,8 +1910,8 @@ void CGameContext::ChilliClanTick(int i)
 				if(g_Config.m_SvKickChilliClan == 1)
 				{
 					GetPlayerChar(i)->m_FreezeTime = 1000;
-					SendBroadcast("WARNING! You are using the wrong 'Chilli.*' clanskin.\n Leave the clan or change skin.", i);
-					SendChatTarget(i, "You got freezed by Chilli.* clanportection. Change skin or clantag!");
+					SendBroadcast("ВНИМАНИЕ! Вы используете неправильный клан-скин 'Chilli.*'.\nПокиньте клан или смените скин.", i);
+					SendChatTarget(i, "Вы заморожены защитой клана Chilli.*. Смените скин или клан-тег!");
 				}
 				else if(g_Config.m_SvKickChilliClan == 2)
 				{
@@ -1924,9 +1924,9 @@ void CGameContext::ChilliClanTick(int i)
 			{
 				SendChatTarget(i, "#######################################");
 				char aBuf[256];
-				str_format(aBuf, sizeof(aBuf), "You are using the wrong skin! Change skin or clantag! Warning: [%d/3]", pPlayer->m_ChilliWarnings);
+				str_format(aBuf, sizeof(aBuf), "Вы используете неправильный скин! Смените скин или клан-тег! Предупреждение: [%d/3]", pPlayer->m_ChilliWarnings);
 				SendChatTarget(i, aBuf);
-				SendChatTarget(i, "For more information about the clan visit: www.chillerdragon.weebly.com");
+				SendChatTarget(i, "Подробнее о клане: www.chillerdragon.weebly.com");
 				SendChatTarget(i, "#######################################");
 
 				/*
@@ -1938,11 +1938,11 @@ void CGameContext::ChilliClanTick(int i)
 				char aBuf2[256];
 				if(g_Config.m_SvKickChilliClan == 1)
 				{
-					str_format(aBuf2, sizeof(aBuf2), "Your are using the wrong skin!\nChange you clantag or use skin 'greensward'!\n\nWARNINGS UNTIL FREEZE[%d / 3]", pPlayer->m_ChilliWarnings);
+					str_format(aBuf2, sizeof(aBuf2), "Вы используете неправильный скин!\nСмените клан-тег или используйте скин 'greensward'!\n\nПРЕДУПРЕЖДЕНИЙ ДО ЗАМОРОЗКИ[%d / 3]", pPlayer->m_ChilliWarnings);
 				}
 				else if(g_Config.m_SvKickChilliClan == 2)
 				{
-					str_format(aBuf2, sizeof(aBuf2), "Your are using the wrong skin!\nChange you clantag or use skin 'greensward'!\n\nWARNINGS UNTIL KICK[%d / 3]", pPlayer->m_ChilliWarnings);
+					str_format(aBuf2, sizeof(aBuf2), "Вы используете неправильный скин!\nСмените клан-тег или используйте скин 'greensward'!\n\nПРЕДУПРЕЖДЕНИЙ ДО КИКА[%d / 3]", pPlayer->m_ChilliWarnings);
 				}
 				SendBroadcast(aBuf2, i);
 			}
@@ -2049,7 +2049,7 @@ void CGameContext::AsciiTick(int i)
 					}
 					else
 					{
-						SendChatTarget(i, "error loading frame");
+						SendChatTarget(i, "ошибка загрузки кадра");
 					}
 				}
 				m_apPlayers[i]->m_AsciiWatchFrame++;
@@ -2329,7 +2329,7 @@ void CGameContext::GlobalChatPrintMessage()
 
 	if(!std::ifstream(g_Config.m_SvGlobalChatFile))
 	{
-		SendChat(-1, TEAM_ALL, "[CHAT] global chat stopped working.");
+		SendChat(-1, TEAM_ALL, "[ЧАТ] глобальный чат перестал работать.");
 		g_Config.m_SvAllowGlobalChat = 0;
 		ChatReadFile.close();
 		return;
@@ -2382,7 +2382,7 @@ void CGameContext::GlobalChatUpdateConfirms(const char *pStr)
 	std::ofstream ChatFile(g_Config.m_SvGlobalChatFile);
 	if(!ChatFile)
 	{
-		SendChat(-1, TEAM_ALL, "[CHAT] global chat failed.... deactivating it.");
+		SendChat(-1, TEAM_ALL, "[ЧАТ] глобальный чат сломался... отключаю.");
 		dbg_msg("CHAT", "ERROR1 writing file '%s'", g_Config.m_SvGlobalChatFile);
 		g_Config.m_SvAllowGlobalChat = 0;
 		ChatFile.close();
@@ -2397,7 +2397,7 @@ void CGameContext::GlobalChatUpdateConfirms(const char *pStr)
 	}
 	else
 	{
-		SendChat(-1, TEAM_ALL, "[CHAT] global chat failed.... deactivating it.");
+		SendChat(-1, TEAM_ALL, "[ЧАТ] глобальный чат сломался... отключаю.");
 		dbg_msg("CHAT", "ERROR2 writing file '%s'", g_Config.m_SvGlobalChatFile);
 		g_Config.m_SvAllowGlobalChat = 0;
 	}
@@ -2468,7 +2468,7 @@ void CGameContext::ShowProfile(int ViewerId, int ViewedId)
 
 	if(!m_apPlayers[ViewedId]->IsLoggedIn())
 	{
-		SendChatTarget(ViewerId, "Player has to be logged in to view his profile.");
+		SendChatTarget(ViewerId, "Игрок должен быть авторизован, чтобы просматривать профиль.");
 		return;
 	}
 
@@ -2496,88 +2496,88 @@ void CGameContext::ShowProfile(int ViewerId, int ViewedId)
 
 	if(m_apPlayers[ViewedId]->m_Account.m_ProfileStyle == 0) //default
 	{
-		str_format(aBuf, sizeof(aBuf), "---  %s's Profile  ---", Server()->ClientName(ViewedId));
+		str_format(aBuf, sizeof(aBuf), "---  Профиль %s  ---", Server()->ClientName(ViewedId));
 		SendChatTarget(ViewerId, aBuf);
 		str_format(aBuf, sizeof(aBuf), "%s", m_apPlayers[ViewedId]->m_Account.m_ProfileStatus);
 		SendChatTarget(ViewerId, aBuf);
 		SendChatTarget(ViewerId, "-------------------------");
-		str_format(aBuf, sizeof(aBuf), "Level: %" PRId64, m_apPlayers[ViewedId]->GetLevel());
+		str_format(aBuf, sizeof(aBuf), "Уровень: %" PRId64, m_apPlayers[ViewedId]->GetLevel());
 		SendChatTarget(ViewerId, aBuf);
-		str_format(aBuf, sizeof(aBuf), "Money: %" PRId64, m_apPlayers[ViewedId]->GetMoney());
+		str_format(aBuf, sizeof(aBuf), "Деньги: %" PRId64, m_apPlayers[ViewedId]->GetMoney());
 		SendChatTarget(ViewerId, aBuf);
-		str_format(aBuf, sizeof(aBuf), "Shit: %d", m_apPlayers[ViewedId]->m_Account.m_Shit);
+		str_format(aBuf, sizeof(aBuf), "Дерьмо: %d", m_apPlayers[ViewedId]->m_Account.m_Shit);
 		SendChatTarget(ViewerId, aBuf);
 	}
 	else if(m_apPlayers[ViewedId]->m_Account.m_ProfileStyle == 1) //shit
 	{
-		str_format(aBuf, sizeof(aBuf), "---  %s's Profile  ---", Server()->ClientName(ViewedId));
+		str_format(aBuf, sizeof(aBuf), "---  Профиль %s  ---", Server()->ClientName(ViewedId));
 		SendChatTarget(ViewerId, aBuf);
 		str_format(aBuf, sizeof(aBuf), "%s", m_apPlayers[ViewedId]->m_Account.m_ProfileStatus);
 		SendChatTarget(ViewerId, aBuf);
 		SendChatTarget(ViewerId, "-------------------------");
-		str_format(aBuf, sizeof(aBuf), "Shit: %d", m_apPlayers[ViewedId]->m_Account.m_Shit);
+		str_format(aBuf, sizeof(aBuf), "Дерьмо: %d", m_apPlayers[ViewedId]->m_Account.m_Shit);
 		SendChatTarget(ViewerId, aBuf);
 	}
 	else if(m_apPlayers[ViewedId]->m_Account.m_ProfileStyle == 2) //social
 	{
-		str_format(aBuf, sizeof(aBuf), "---  %s's Profile  ---", Server()->ClientName(ViewedId));
+		str_format(aBuf, sizeof(aBuf), "---  Профиль %s  ---", Server()->ClientName(ViewedId));
 		SendChatTarget(ViewerId, aBuf);
 		str_format(aBuf, sizeof(aBuf), "%s", m_apPlayers[ViewedId]->m_Account.m_ProfileStatus);
 		SendChatTarget(ViewerId, aBuf);
 		SendChatTarget(ViewerId, "-------------------------");
 		str_format(aBuf, sizeof(aBuf), "Skype: %s", m_apPlayers[ViewedId]->m_Account.m_ProfileSkype);
 		SendChatTarget(ViewerId, aBuf);
-		str_format(aBuf, sizeof(aBuf), "Youtube: %s", m_apPlayers[ViewedId]->m_Account.m_ProfileYoutube);
+		str_format(aBuf, sizeof(aBuf), "YouTube: %s", m_apPlayers[ViewedId]->m_Account.m_ProfileYoutube);
 		SendChatTarget(ViewerId, aBuf);
-		str_format(aBuf, sizeof(aBuf), "e-mail: %s", m_apPlayers[ViewedId]->m_Account.m_ProfileEmail);
+		str_format(aBuf, sizeof(aBuf), "E-mail: %s", m_apPlayers[ViewedId]->m_Account.m_ProfileEmail);
 		SendChatTarget(ViewerId, aBuf);
-		str_format(aBuf, sizeof(aBuf), "Homepage: %s", m_apPlayers[ViewedId]->m_Account.m_ProfileHomepage);
+		str_format(aBuf, sizeof(aBuf), "Сайт: %s", m_apPlayers[ViewedId]->m_Account.m_ProfileHomepage);
 		SendChatTarget(ViewerId, aBuf);
 		str_format(aBuf, sizeof(aBuf), "Twitter: %s", m_apPlayers[ViewedId]->m_Account.m_ProfileTwitter);
 		SendChatTarget(ViewerId, aBuf);
 	}
 	else if(m_apPlayers[ViewedId]->m_Account.m_ProfileStyle == 3) //show-off
 	{
-		str_format(aBuf, sizeof(aBuf), "---  %s's Profile  ---", Server()->ClientName(ViewedId));
+		str_format(aBuf, sizeof(aBuf), "---  Профиль %s  ---", Server()->ClientName(ViewedId));
 		SendChatTarget(ViewerId, aBuf);
 		str_format(aBuf, sizeof(aBuf), "%s", m_apPlayers[ViewedId]->m_Account.m_ProfileStatus);
 		SendChatTarget(ViewerId, aBuf);
 		SendChatTarget(ViewerId, "-------------------------");
-		str_format(aBuf, sizeof(aBuf), "Profileviews: %d", m_apPlayers[ViewedId]->m_Account.m_ProfileViews);
+		str_format(aBuf, sizeof(aBuf), "Просмотров профиля: %d", m_apPlayers[ViewedId]->m_Account.m_ProfileViews);
 		SendChatTarget(ViewerId, aBuf);
-		str_format(aBuf, sizeof(aBuf), "Policerank: %d", m_apPlayers[ViewedId]->m_Account.m_PoliceRank);
+		str_format(aBuf, sizeof(aBuf), "Полицейский ранг: %d", m_apPlayers[ViewedId]->m_Account.m_PoliceRank);
 		SendChatTarget(ViewerId, aBuf);
-		str_format(aBuf, sizeof(aBuf), "Level: %" PRId64, m_apPlayers[ViewedId]->GetLevel());
+		str_format(aBuf, sizeof(aBuf), "Уровень: %" PRId64, m_apPlayers[ViewedId]->GetLevel());
 		SendChatTarget(ViewerId, aBuf);
-		str_format(aBuf, sizeof(aBuf), "Shit: %d", m_apPlayers[ViewedId]->m_Account.m_Shit);
+		str_format(aBuf, sizeof(aBuf), "Дерьмо: %d", m_apPlayers[ViewedId]->m_Account.m_Shit);
 		SendChatTarget(ViewerId, aBuf);
 	}
 	else if(m_apPlayers[ViewedId]->m_Account.m_ProfileStyle == 4) //pvp
 	{
-		str_format(aBuf, sizeof(aBuf), "---  %s's Profile  ---", Server()->ClientName(ViewedId));
+		str_format(aBuf, sizeof(aBuf), "---  Профиль %s  ---", Server()->ClientName(ViewedId));
 		SendChatTarget(ViewerId, aBuf);
 		str_format(aBuf, sizeof(aBuf), "%s", m_apPlayers[ViewedId]->m_Account.m_ProfileStatus);
 		SendChatTarget(ViewerId, aBuf);
 		SendChatTarget(ViewerId, "-------------------------");
-		str_format(aBuf, sizeof(aBuf), "PVP-ARENA Games: %d", m_apPlayers[ViewedId]->m_Account.m_PvpArenaGamesPlayed);
+		str_format(aBuf, sizeof(aBuf), "PvP-Арена игр: %d", m_apPlayers[ViewedId]->m_Account.m_PvpArenaGamesPlayed);
 		SendChatTarget(ViewerId, aBuf);
-		str_format(aBuf, sizeof(aBuf), "PVP-ARENA Kills: %d", m_apPlayers[ViewedId]->m_Account.m_PvpArenaKills);
+		str_format(aBuf, sizeof(aBuf), "PvP-Арена убийств: %d", m_apPlayers[ViewedId]->m_Account.m_PvpArenaKills);
 		SendChatTarget(ViewerId, aBuf);
-		str_format(aBuf, sizeof(aBuf), "PVP-ARENA Deaths: %d", m_apPlayers[ViewedId]->m_Account.m_PvpArenaDeaths);
+		str_format(aBuf, sizeof(aBuf), "PvP-Арена смертей: %d", m_apPlayers[ViewedId]->m_Account.m_PvpArenaDeaths);
 		SendChatTarget(ViewerId, aBuf);
 		//str_format(aBuf, sizeof(aBuf), "PVP-ARENA K/D: %d", m_apPlayers[ViewedId]->m_Account.m_PvpArenaKills / m_Account.m_PvpArenaDeaths);
 		//SendChatTarget(ViewerId, aBuf);
 	}
 	else if(m_apPlayers[ViewedId]->m_Account.m_ProfileStyle == 5) //bomber
 	{
-		str_format(aBuf, sizeof(aBuf), "---  %s's Profile  ---", Server()->ClientName(ViewedId));
+		str_format(aBuf, sizeof(aBuf), "---  Профиль %s  ---", Server()->ClientName(ViewedId));
 		SendChatTarget(ViewerId, aBuf);
 		str_format(aBuf, sizeof(aBuf), "%s", m_apPlayers[ViewedId]->m_Account.m_ProfileStatus);
 		SendChatTarget(ViewerId, aBuf);
 		SendChatTarget(ViewerId, "-------------------------");
-		str_format(aBuf, sizeof(aBuf), "Bomb Games Played: %d", m_apPlayers[ViewedId]->m_Account.m_BombGamesPlayed);
+		str_format(aBuf, sizeof(aBuf), "Бомб-игр сыграно: %d", m_apPlayers[ViewedId]->m_Account.m_BombGamesPlayed);
 		SendChatTarget(ViewerId, aBuf);
-		str_format(aBuf, sizeof(aBuf), "Bomb Games Won: %d", m_apPlayers[ViewedId]->m_Account.m_BombGamesWon);
+		str_format(aBuf, sizeof(aBuf), "Бомб-игр выиграно: %d", m_apPlayers[ViewedId]->m_Account.m_BombGamesWon);
 		SendChatTarget(ViewerId, aBuf);
 		//str_format(aBuf, sizeof(aBuf), "PVP-ARENA K/D: %d", m_apPlayers[ViewedId]->m_Account.m_PvpArenaKills / m_Account.m_PvpArenaDeaths);
 		//SendChatTarget(ViewerId, aBuf);
@@ -2586,63 +2586,63 @@ void CGameContext::ShowProfile(int ViewerId, int ViewedId)
 
 void CGameContext::ShowAdminWelcome(int Id)
 {
-	SendChatTarget(Id, "============= admin login =============");
+	SendChatTarget(Id, "============= вход администратора =============");
 	char aBuf[128];
 	if(m_WrongRconAttempts >= g_Config.m_SvRconAttemptReport)
 	{
-		str_format(aBuf, sizeof(aBuf), "Warning %d failed rcon attempts since last successful login! 'logs wrong_rcon'", m_WrongRconAttempts);
+		str_format(aBuf, sizeof(aBuf), "Внимание: %d неудачных попыток rcon с последнего входа! 'logs wrong_rcon'", m_WrongRconAttempts);
 		Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "ddnet++", aBuf);
 	}
 	if(aDDPPLogs[DDPP_LOG_AUTH_RCON][1][0]) // index 1 because index 0 is current login
 	{
-		str_format(aBuf, sizeof(aBuf), "last login %s", aDDPPLogs[DDPP_LOG_AUTH_RCON][1]);
+		str_format(aBuf, sizeof(aBuf), "последний вход %s", aDDPPLogs[DDPP_LOG_AUTH_RCON][1]);
 		Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "ddnet++", aBuf);
 	}
 	if(aDDPPLogs[DDPP_LOG_FLOOD][0][0])
 	{
-		str_format(aBuf, sizeof(aBuf), "last flood warning ('logs flood' to see all): %s", aDDPPLogs[DDPP_LOG_FLOOD][0]);
+		str_format(aBuf, sizeof(aBuf), "последнее предупреждение о флуде ('logs flood' чтобы увидеть все): %s", aDDPPLogs[DDPP_LOG_FLOOD][0]);
 		Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "ddnet++", aBuf);
 	}
 	int SurvError = TestSurvivalSpawns();
 	if(SurvError == -1)
 	{
-		SendChatTarget(Id, "[ADMIN:Test] WARNING: less survival spawns on map than slots possible in ddnet++ (no problem as long as slots stay how they are)");
+		SendChatTarget(Id, "[ADMIN:Test] ВНИМАНИЕ: на карте меньше survival-спавнов, чем слотов в ddnet++ (это нормально, если слоты не меняются)");
 	}
 	else if(SurvError == -2)
 	{
-		SendChatTarget(Id, "[ADMIN:Test] WARNING: not enough survival spawns (less survival spawns than slots)");
+		SendChatTarget(Id, "[ADMIN:Test] ВНИМАНИЕ: недостаточно survival-спавнов (меньше, чем слотов)");
 	}
 	int protections = 0;
 	if(g_Config.m_SvRegisterHumanLevel)
 	{
-		str_format(aBuf, sizeof(aBuf), "[ADMIN:Prot] Warning sv_register_human_level = %d", g_Config.m_SvRegisterHumanLevel);
+		str_format(aBuf, sizeof(aBuf), "[ADMIN:Prot] Внимание sv_register_human_level = %d", g_Config.m_SvRegisterHumanLevel);
 		SendChatTarget(Id, aBuf);
 		protections++;
 	}
 	if(g_Config.m_SvChatHumanLevel)
 	{
-		str_format(aBuf, sizeof(aBuf), "[ADMIN:Prot] Warning sv_chat_human_level = %d", g_Config.m_SvChatHumanLevel);
+		str_format(aBuf, sizeof(aBuf), "[ADMIN:Prot] Внимание sv_chat_human_level = %d", g_Config.m_SvChatHumanLevel);
 		SendChatTarget(Id, aBuf);
 		protections++;
 	}
 	if(g_Config.m_SvShowConnectionMessages != CON_SHOW_ALL)
 	{
-		str_format(aBuf, sizeof(aBuf), "[ADMIN:Prot] Warning sv_show_connection_msg = %d", g_Config.m_SvShowConnectionMessages);
+		str_format(aBuf, sizeof(aBuf), "[ADMIN:Prot] Внимание sv_show_connection_msg = %d", g_Config.m_SvShowConnectionMessages);
 		SendChatTarget(Id, aBuf);
 		protections++;
 	}
 	if(g_Config.m_SvHideConnectionMessagesPattern[0])
 	{
-		str_format(aBuf, sizeof(aBuf), "[ADMIN:Prot] Warning sv_hide_connection_msg_pattern = %s", g_Config.m_SvHideConnectionMessagesPattern);
+		str_format(aBuf, sizeof(aBuf), "[ADMIN:Prot] Внимание sv_hide_connection_msg_pattern = %s", g_Config.m_SvHideConnectionMessagesPattern);
 		SendChatTarget(Id, aBuf);
 		protections++;
 	}
 	if(protections)
 	{
-		str_format(aBuf, sizeof(aBuf), "[ADMIN:Prot] Warning you have %d protective systems running!", protections);
+		str_format(aBuf, sizeof(aBuf), "[ADMIN:Prot] Внимание: у вас запущено %d защитных систем!", protections);
 		SendChatTarget(Id, aBuf);
-		SendChatTarget(Id, "[ADMIN:Prot] As effective those are under attack and as good protection sounds.");
-		SendChatTarget(Id, "[ADMIN:Prot] Those should not run if there is no attack since they lower UX.");
+		SendChatTarget(Id, "[ADMIN:Prot] Они эффективны при атаке, но не всегда нужны.");
+		SendChatTarget(Id, "[ADMIN:Prot] Если атак нет, лучше их выключить, так как они ухудшают UX.");
 		protections++;
 	}
 	PrintSpecialCharUsers(Id);
@@ -2835,7 +2835,7 @@ bool CGameContext::CheckIpJailed(int ClientId)
 	{
 		if(!net_addr_comp_noport(pAddr, &m_aJailIps[i]))
 		{
-			SendChatTarget(ClientId, "[JAIL] you have been jailed for 2 minutes.");
+			SendChatTarget(ClientId, "[ТЮРЬМА] вы отправлены в тюрьму на 2 минуты.");
 			m_apPlayers[ClientId]->JailPlayer(120);
 			return true;
 		}
@@ -2998,7 +2998,7 @@ void CGameContext::GetSpreeType(int ClientId, char *pBuf, size_t BufSize, bool I
 		if(IsRecord && pPlayer->m_KillStreak > pPlayer->m_Account.m_GrenadeSpree)
 		{
 			pPlayer->m_Account.m_GrenadeSpree = pPlayer->m_KillStreak;
-			SendChatTarget(pPlayer->GetCid(), "New grenade spree record!");
+			SendChatTarget(pPlayer->GetCid(), "Новый рекорд серии гранат!");
 		}
 		str_copy(pBuf, "grenade", BufSize);
 	}
@@ -3007,7 +3007,7 @@ void CGameContext::GetSpreeType(int ClientId, char *pBuf, size_t BufSize, bool I
 		if(IsRecord && pPlayer->m_KillStreak > pPlayer->m_Account.m_RifleSpree)
 		{
 			pPlayer->m_Account.m_RifleSpree = pPlayer->m_KillStreak;
-			SendChatTarget(pPlayer->GetCid(), "New rifle spree record!");
+			SendChatTarget(pPlayer->GetCid(), "Новый рекорд серии винтовки!");
 		}
 		str_copy(pBuf, "rifle", BufSize);
 	}
@@ -3020,7 +3020,7 @@ void CGameContext::GetSpreeType(int ClientId, char *pBuf, size_t BufSize, bool I
 		if(IsRecord && pPlayer->m_KillStreak > pPlayer->m_BlockSpreeHighscore)
 		{
 			pPlayer->m_BlockSpreeHighscore = pPlayer->m_KillStreak;
-			SendChatTarget(pPlayer->GetCid(), "New Blockspree record!");
+			SendChatTarget(pPlayer->GetCid(), "Новый рекорд серии блоков!");
 		}
 		str_copy(pBuf, "blocking", BufSize); // LOCALIZED BY CALLER
 	}
