@@ -594,22 +594,22 @@ bool CSaveTeam::HandleSaveError(ESaveResult Result, int ClientId, CGameContext *
 	case ESaveResult::SUCCESS:
 		return false;
 	case ESaveResult::TEAM_FLOCK:
-		pGameContext->SendChatTarget(ClientId, "You have to be in a team (from 1-63)");
+		pGameContext->SendChatTarget(ClientId, "Вы должны быть в команде (от 1 до 63)");
 		break;
 	case ESaveResult::TEAM_NOT_FOUND:
-		pGameContext->SendChatTarget(ClientId, "Could not find your Team");
+		pGameContext->SendChatTarget(ClientId, "Не удалось найти вашу команду");
 		break;
 	case ESaveResult::CHAR_NOT_FOUND:
-		pGameContext->SendChatTarget(ClientId, "To save all players in your team have to be alive and not in '/spec'");
+		pGameContext->SendChatTarget(ClientId, "Чтобы сохранить команду, все игроки должны быть живы и не в '/spec'");
 		break;
 	case ESaveResult::NOT_STARTED:
-		pGameContext->SendChatTarget(ClientId, "Your team has not started yet");
+		pGameContext->SendChatTarget(ClientId, "Ваша команда ещё не стартовала");
 		break;
 	case ESaveResult::TEAM_0_MODE:
-		pGameContext->SendChatTarget(ClientId, "Team can't be saved while in team 0 mode");
+		pGameContext->SendChatTarget(ClientId, "Нельзя сохранить команду в режиме team 0");
 		break;
 	case ESaveResult::DRAGGER_ACTIVE:
-		pGameContext->SendChatTarget(ClientId, "Team can't be saved while a dragger is active");
+		pGameContext->SendChatTarget(ClientId, "Нельзя сохранить команду, пока активен dragger");
 		break;
 	}
 	return true;

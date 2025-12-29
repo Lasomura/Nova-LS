@@ -37,10 +37,10 @@ void CGameContext::ConfreezeShotgun(IConsole::IResult *pResult, void *pUserData)
 		pChr->m_isDmg ^= true;
 
 		char aBuf[256];
-		str_format(aBuf, sizeof(aBuf), "freezeShotgun has been %s for %s", pChr->m_freezeShotgun ? "enabled" : "disabled", pSelf->Server()->ClientName(ClientId));
+		str_format(aBuf, sizeof(aBuf), "freezeShotgun %s для %s", pChr->m_freezeShotgun ? "включён" : "выключен", pSelf->Server()->ClientName(ClientId));
 		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "info", aBuf);
 
-		str_format(aBuf, sizeof(aBuf), "freezeShotgun was %s by %s", pChr->m_freezeShotgun ? "given to you" : "removed", pSelf->Server()->ClientName(pResult->m_ClientId));
+		str_format(aBuf, sizeof(aBuf), "freezeShotgun %s админом %s", pChr->m_freezeShotgun ? "выдан вам" : "снят у вас", pSelf->Server()->ClientName(pResult->m_ClientId));
 		pSelf->SendChatTarget(ClientId, aBuf);
 	}
 }
@@ -56,7 +56,7 @@ void CGameContext::ConFreezeLaser(IConsole::IResult *pResult, void *pUserData)
 		return;
 
 	char aBuf[128];
-	str_format(aBuf, sizeof aBuf, "'%s' got freeze Laser!",
+	str_format(aBuf, sizeof aBuf, "'%s' получил freeze Laser!",
 		pSelf->Server()->ClientName(Victim));
 	pSelf->SendChat(-1, TEAM_ALL, aBuf);
 
@@ -151,13 +151,13 @@ void CGameContext::Conheal(IConsole::IResult *pResult, void *pUserData)
 		pChr->m_isHeal = true; //hier wird der heil effekt getriggat yuuu!
 
 		char aBuf[256];
-		str_format(aBuf, sizeof(aBuf), "%s has been given full health.", pSelf->Server()->ClientName(ClientId));
+		str_format(aBuf, sizeof(aBuf), "%s получил полное здоровье.", pSelf->Server()->ClientName(ClientId));
 		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "info", aBuf);
 
-		str_format(aBuf, sizeof(aBuf), "Your health is now at 10HP! Say thanks to %s", pSelf->Server()->ClientName(pResult->m_ClientId));
+		str_format(aBuf, sizeof(aBuf), "Ваше здоровье теперь 10 HP! Поблагодарите %s", pSelf->Server()->ClientName(pResult->m_ClientId));
 		pSelf->SendChatTarget(ClientId, aBuf);
 
-		str_format(aBuf, sizeof(aBuf), "%s was healed by %s", pSelf->Server()->ClientName(ClientId), pSelf->Server()->ClientName(pResult->m_ClientId));
+		str_format(aBuf, sizeof(aBuf), "%s был вылечен игроком %s", pSelf->Server()->ClientName(ClientId), pSelf->Server()->ClientName(pResult->m_ClientId));
 		pSelf->SendChat(-1, TEAM_ALL, aBuf);
 	}
 }
@@ -177,7 +177,7 @@ void CGameContext::Condummymode(IConsole::IResult *pResult, void *pUserData)
 		if(Mode == DUMMYMODE_SHOPBOT && pSelf->GetShopBot() != -1) // there can only be one shop bot
 		{
 			char aBuf[256];
-			str_format(aBuf, sizeof(aBuf), "There is already a shop bot: '%s'", pSelf->Server()->ClientName(pSelf->GetShopBot()));
+			str_format(aBuf, sizeof(aBuf), "Уже есть shop bot: '%s'", pSelf->Server()->ClientName(pSelf->GetShopBot()));
 			pSelf->SendChatTarget(pResult->m_ClientId, aBuf);
 			return;
 		}
@@ -526,10 +526,10 @@ void CGameContext::ConOldAutoSpreadGun(IConsole::IResult *pResult, void *pUserDa
 		pChr->m_autospreadgun ^= true;
 
 		char aBuf[256];
-		str_format(aBuf, sizeof(aBuf), "Spread gun has been %s for %s", pChr->m_autospreadgun ? "enabled" : "disabled", pSelf->Server()->ClientName(ClientId));
+		str_format(aBuf, sizeof(aBuf), "Spread gun %s для %s", pChr->m_autospreadgun ? "включён" : "выключен", pSelf->Server()->ClientName(ClientId));
 		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "info", aBuf);
 
-		str_format(aBuf, sizeof(aBuf), "Spread Gun was %s by %s", pChr->m_autospreadgun ? "given to you" : "removed", pSelf->Server()->ClientName(pResult->m_ClientId));
+		str_format(aBuf, sizeof(aBuf), "Spread gun %s админом %s", pChr->m_autospreadgun ? "выдан вам" : "снят у вас", pSelf->Server()->ClientName(pResult->m_ClientId));
 		pSelf->SendChatTarget(ClientId, aBuf);
 	}
 }
@@ -548,10 +548,10 @@ void CGameContext::ConHomingMissile(IConsole::IResult *pResult, void *pUserData)
 		pChr->m_HomingMissile ^= true;
 
 		char aBuf[256];
-		str_format(aBuf, sizeof(aBuf), "Homing Missile has been %s for %s", pChr->m_HomingMissile ? "enabled" : "disabled", pSelf->Server()->ClientName(ClientId));
+		str_format(aBuf, sizeof(aBuf), "Homing Missile %s для %s", pChr->m_HomingMissile ? "включён" : "выключен", pSelf->Server()->ClientName(ClientId));
 		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "info", aBuf);
 
-		str_format(aBuf, sizeof(aBuf), "Homing Missile was %s by %s", pChr->m_HomingMissile ? "given to you" : "removed", pSelf->Server()->ClientName(pResult->m_ClientId));
+		str_format(aBuf, sizeof(aBuf), "Homing Missile %s админом %s", pChr->m_HomingMissile ? "выдан вам" : "снят у вас", pSelf->Server()->ClientName(pResult->m_ClientId));
 		pSelf->SendChatTarget(ClientId, aBuf);
 	}
 }
@@ -561,12 +561,12 @@ void CGameContext::ConBlockVotes(IConsole::IResult *pResult, void *pUserData)
 	CGameContext *pSelf = (CGameContext *)pUserData;
 	pSelf->m_VotingBlockedUntil = -1;
 	char aBuf[512];
-	str_copy(aBuf, "votes are blocked", sizeof(aBuf));
+	str_copy(aBuf, "голосования заблокированы", sizeof(aBuf));
 	if(pResult->NumArguments() > 0)
 	{
 		int Mins = pResult->GetInteger(0);
 		pSelf->m_VotingBlockedUntil = time_get() + (Mins * time_freq() * 60);
-		str_format(aBuf, sizeof(aBuf), "votes are blocked for %d minutes", Mins);
+		str_format(aBuf, sizeof(aBuf), "голосования заблокированы на %d минут", Mins);
 	}
 	pSelf->SendChat(-1, TEAM_ALL, aBuf);
 }
@@ -575,7 +575,7 @@ void CGameContext::ConUnblockVotes(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
 	pSelf->m_VotingBlockedUntil = 0;
-	pSelf->SendChat(-1, TEAM_ALL, "votes are unblocked");
+	pSelf->SendChat(-1, TEAM_ALL, "голосования разблокированы");
 }
 
 void CGameContext::ConOldTrail(IConsole::IResult *pResult, void *pUserData)
@@ -592,10 +592,10 @@ void CGameContext::ConOldTrail(IConsole::IResult *pResult, void *pUserData)
 		pChr->m_Trail ^= true;
 
 		char aBuf[256];
-		str_format(aBuf, sizeof(aBuf), "Trail has been %s for %s", pChr->m_Trail ? "enabled" : "disabled", pSelf->Server()->ClientName(ClientId));
+		str_format(aBuf, sizeof(aBuf), "Trail %s для %s", pChr->m_Trail ? "включён" : "выключен", pSelf->Server()->ClientName(ClientId));
 		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "info", aBuf);
 
-		str_format(aBuf, sizeof(aBuf), "Trail was %s by %s", pChr->m_Trail ? "given to you" : "removed", pSelf->Server()->ClientName(pResult->m_ClientId));
+		str_format(aBuf, sizeof(aBuf), "Trail %s админом %s", pChr->m_Trail ? "выдан вам" : "снят у вас", pSelf->Server()->ClientName(pResult->m_ClientId));
 		pSelf->SendChatTarget(ClientId, aBuf);
 	}
 }
@@ -614,10 +614,10 @@ void CGameContext::ConInfTrail(IConsole::IResult *pResult, void *pUserData)
 		pPlayer->m_InfTrail ^= true;
 
 		char aBuf[256];
-		str_format(aBuf, sizeof(aBuf), "Infinite Trail has been %s for %s", pPlayer->m_InfTrail ? "enabled" : "disabled", pSelf->Server()->ClientName(ClientId));
+		str_format(aBuf, sizeof(aBuf), "Infinite Trail %s для %s", pPlayer->m_InfTrail ? "включён" : "выключен", pSelf->Server()->ClientName(ClientId));
 		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "info", aBuf);
 
-		str_format(aBuf, sizeof(aBuf), "Infinite Trail was %s by %s", pPlayer->m_InfTrail ? "given to you" : "removed", pSelf->Server()->ClientName(pResult->m_ClientId));
+		str_format(aBuf, sizeof(aBuf), "Infinite Trail %s админом %s", pPlayer->m_InfTrail ? "выдан вам" : "снят у вас", pSelf->Server()->ClientName(pResult->m_ClientId));
 		pSelf->SendChatTarget(ClientId, aBuf);
 	}
 }
@@ -640,10 +640,10 @@ void CGameContext::ConForceJail(IConsole::IResult *pResult, void *pUserData)
 		pPlayer->JailPlayer(Seconds);
 
 		char aBuf[256];
-		str_format(aBuf, sizeof(aBuf), "[JAIL] You were jailed by the evil admin '%s' for %d seconds.", pSelf->Server()->ClientName(pResult->m_ClientId), Seconds);
+		str_format(aBuf, sizeof(aBuf), "[ТЮРЬМА] Вас посадил злой админ '%s' на %d секунд.", pSelf->Server()->ClientName(pResult->m_ClientId), Seconds);
 		pSelf->SendChatTarget(ClientId, aBuf);
 
-		str_format(aBuf, sizeof(aBuf), "[JAIL] You jailed '%s' for %d seconds.", pSelf->Server()->ClientName(ClientId), Seconds);
+		str_format(aBuf, sizeof(aBuf), "[ТЮРЬМА] Вы посадили '%s' на %d секунд.", pSelf->Server()->ClientName(ClientId), Seconds);
 		pSelf->SendChatTarget(pResult->m_ClientId, aBuf);
 	}
 }
@@ -671,12 +671,12 @@ void CGameContext::ConForceUnJail(IConsole::IResult *pResult, void *pUserData)
 			}
 			else //no jailrelease
 			{
-				pSelf->SendChatTarget(pPlayer->GetCid(), "gibts nich");
+				pSelf->SendChatTarget(pPlayer->GetCid(), "такого нет");
 			}
 		}
 
 		char aBuf[256];
-		str_format(aBuf, sizeof(aBuf), "You were released by the kind admin '%s'.", pSelf->Server()->ClientName(pResult->m_ClientId));
+		str_format(aBuf, sizeof(aBuf), "Вас освободил добрый админ '%s'.", pSelf->Server()->ClientName(pResult->m_ClientId));
 		pSelf->SendChatTarget(ClientId, aBuf);
 	}
 }
@@ -696,10 +696,10 @@ void CGameContext::ConDamage(IConsole::IResult *pResult, void *pUserData)
 		pChr->m_isDmg ^= true;
 
 		char aBuf[256];
-		str_format(aBuf, sizeof(aBuf), "Damage has been %s for %s.", pChr->m_isDmg ? "enabled" : "disabled", pSelf->Server()->ClientName(ClientId));
+		str_format(aBuf, sizeof(aBuf), "Damage %s для %s.", pChr->m_isDmg ? "включён" : "выключен", pSelf->Server()->ClientName(ClientId));
 		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "info", aBuf);
 
-		str_format(aBuf, sizeof(aBuf), "Damage was %s by %s.", pChr->m_isDmg ? "given to you" : "removed", pSelf->Server()->ClientName(pResult->m_ClientId));
+		str_format(aBuf, sizeof(aBuf), "Damage %s админом %s.", pChr->m_isDmg ? "выдан вам" : "снят у вас", pSelf->Server()->ClientName(pResult->m_ClientId));
 		pSelf->SendChatTarget(ClientId, aBuf);
 	}
 }
@@ -726,13 +726,13 @@ void CGameContext::ConHammerfightMode(IConsole::IResult *pResult, void *pUserDat
 		pChr->m_hammerfight ^= true;
 
 		char aBuf[256];
-		str_format(aBuf, sizeof(aBuf), "For %s hammerfight mode has been changed to: %s", pSelf->Server()->ClientName(ClientId), pChr->m_hammerfight ? "ON" : "OFF");
+		str_format(aBuf, sizeof(aBuf), "Для %s режим hammerfight изменён на: %s", pSelf->Server()->ClientName(ClientId), pChr->m_hammerfight ? "ВКЛ" : "ВЫКЛ");
 		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "info", aBuf);
 
-		str_format(aBuf, sizeof(aBuf), "You were %s hammerfight-mode and your health was set to 10hp by %s", pChr->m_hammerfight ? "moved to" : "removed from", pSelf->Server()->ClientName(pResult->m_ClientId));
+		str_format(aBuf, sizeof(aBuf), "Вас %s hammerfight-режим и ваше здоровье установлено на 10 HP админом %s", pChr->m_hammerfight ? "перевели в" : "убрали из", pSelf->Server()->ClientName(pResult->m_ClientId));
 		pSelf->SendChatTarget(ClientId, aBuf);
 
-		str_format(aBuf, sizeof(aBuf), "hammerfight-mode has been turned %s for %s by %s", pChr->m_hammerfight ? "ON" : "OFF", pSelf->Server()->ClientName(ClientId), pSelf->Server()->ClientName(pResult->m_ClientId));
+		str_format(aBuf, sizeof(aBuf), "hammerfight-режим %s для %s админом %s", pChr->m_hammerfight ? "ВКЛ" : "ВЫКЛ", pSelf->Server()->ClientName(ClientId), pSelf->Server()->ClientName(pResult->m_ClientId));
 		pSelf->SendChat(-1, TEAM_ALL, aBuf);
 	}
 }
@@ -743,7 +743,7 @@ void CGameContext::ConRegisterBan(IConsole::IResult *pResult, void *pUserData)
 	pSelf->Console()->Print(
 		IConsole::OUTPUT_LEVEL_STANDARD,
 		"register_bans",
-		"Use either 'register_ban_id <client_id> <seconds>' or 'register_ban_ip <ip> <seconds>'");
+		"Используйте 'register_ban_id <client_id> <seconds>' или 'register_ban_ip <ip> <seconds>'");
 }
 
 // RegisterBan through client id
@@ -1235,7 +1235,7 @@ void CGameContext::ConRunTest(IConsole::IResult *pResult, void *pUserData)
 	CGameContext *pSelf = (CGameContext *)pUserData;
 
 	int Test = pResult->GetInteger(0);
-	pSelf->SendChat(-1, TEAM_ALL, "WARNING: running tests! server will shutdown!");
+	pSelf->SendChat(-1, TEAM_ALL, "ВНИМАНИЕ: идут тесты! сервер будет остановлен!");
 
 	if(Test == 0)
 	{

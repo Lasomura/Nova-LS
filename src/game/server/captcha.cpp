@@ -24,7 +24,7 @@ bool CCaptcha::CheckGenerate()
 	if(m_aQuestion[0])
 		return false;
 
-	SendChat("type '/captcha <answer>' to respond.");
+	SendChat("Введите '/captcha <ответ>' чтобы ответить.");
 	Generate();
 	return true;
 }
@@ -33,7 +33,7 @@ void CCaptcha::GenQuestion(int Type)
 {
 	int Num1 = rand() % 10;
 	int Num2 = rand() % 10;
-	str_format(m_aQuestion, sizeof(m_aQuestion), "what is %d + %d? '/captcha <number>'", Num1, Num2);
+	str_format(m_aQuestion, sizeof(m_aQuestion), "сколько будет %d + %d? '/captcha <число>'", Num1, Num2);
 	str_format(m_aAnswer, sizeof(m_aAnswer), "%d", Num1 + Num2);
 }
 
@@ -56,7 +56,7 @@ void CCaptcha::GenBigText(int Type)
 	}
 	m_aAnswer[i] = '\0';
 	str_copy(m_aBigText, m_aAnswer, sizeof(m_aBigText));
-	str_copy(m_aQuestion, "type out the big characters! '/captcha <characters>'", sizeof(m_aQuestion));
+	str_copy(m_aQuestion, "введите большие символы! '/captcha <символы>'", sizeof(m_aQuestion));
 }
 
 void CCaptcha::Generate()
@@ -76,7 +76,7 @@ bool CCaptcha::Score(int value)
 	if(m_Score < g_Config.m_SvCaptchaScore)
 		return false;
 
-	SendChat("YOU SOLVED THE CAPTCHA! Seems like you are a human.");
+	SendChat("ВЫ РЕШИЛИ КАПЧУ! Похоже, вы человек.");
 	m_IsHuman = true;
 	return true;
 }
@@ -100,7 +100,7 @@ bool CCaptcha::Prompt(const char *pAnswer)
 	if(!str_comp_nocase(pAnswer, m_aAnswer))
 	{
 		Generate();
-		SendChat("CORRECT ANSWER!");
+		SendChat("ПРАВИЛЬНЫЙ ОТВЕТ!");
 		if(Score(1))
 			return true;
 		Correct = true;
@@ -108,7 +108,7 @@ bool CCaptcha::Prompt(const char *pAnswer)
 	else
 	{
 		char aBuf[128];
-		str_format(aBuf, sizeof(aBuf), "WRONG ANSWER! (correct: '%s')", m_aAnswer);
+		str_format(aBuf, sizeof(aBuf), "НЕПРАВИЛЬНЫЙ ОТВЕТ! (верный: '%s')", m_aAnswer);
 		SendChat(aBuf);
 		Score(-1);
 	}
@@ -128,6 +128,6 @@ void CCaptcha::ShowQuestion()
 void CCaptcha::SendChat(const char *pMsg)
 {
 	char aBuf[128];
-	str_format(aBuf, sizeof(aBuf), "[CAPTCHA] %s", pMsg);
+	str_format(aBuf, sizeof(aBuf), "[КАПЧА] %s", pMsg);
 	GameServer()->SendChatTarget(m_ClientId, aBuf);
 }
