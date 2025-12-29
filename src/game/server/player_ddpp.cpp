@@ -76,10 +76,10 @@ void CPlayer::ResetDDPP()
 		str_copy(m_Account.m_aAsciiFrame[6], "++++++", sizeof(m_Account.m_aAsciiFrame[6]));
 		str_copy(m_Account.m_aAsciiFrame[7], "xxxxxxx", sizeof(m_Account.m_aAsciiFrame[7]));
 		str_copy(m_Account.m_aAsciiFrame[8], "++++++++", sizeof(m_Account.m_aAsciiFrame[8]));
-		str_copy(m_Account.m_aAsciiFrame[9], "ChillerDragon's sample animation", sizeof(m_Account.m_aAsciiFrame[9]));
-		str_copy(m_Account.m_aAsciiFrame[10], "ChillerDragon's sample animation", sizeof(m_Account.m_aAsciiFrame[10]));
-		str_copy(m_Account.m_aAsciiFrame[11], "ChillerDragon's sample animation", sizeof(m_Account.m_aAsciiFrame[11]));
-		str_copy(m_Account.m_aAsciiFrame[12], "ChillerDragon's sample animation", sizeof(m_Account.m_aAsciiFrame[12]));
+		str_copy(m_Account.m_aAsciiFrame[9], "Пример анимации ChillerDragon", sizeof(m_Account.m_aAsciiFrame[9]));
+		str_copy(m_Account.m_aAsciiFrame[10], "Пример анимации ChillerDragon", sizeof(m_Account.m_aAsciiFrame[10]));
+		str_copy(m_Account.m_aAsciiFrame[11], "Пример анимации ChillerDragon", sizeof(m_Account.m_aAsciiFrame[11]));
+		str_copy(m_Account.m_aAsciiFrame[12], "Пример анимации ChillerDragon", sizeof(m_Account.m_aAsciiFrame[12]));
 		str_copy(m_Account.m_aAsciiFrame[13], ".", sizeof(m_Account.m_aAsciiFrame[13]));
 		str_copy(m_Account.m_aAsciiFrame[14], ":", sizeof(m_Account.m_aAsciiFrame[14]));
 		str_copy(m_Account.m_aAsciiFrame[15], ".:.", sizeof(m_Account.m_aAsciiFrame[15]));
@@ -95,7 +95,7 @@ void CPlayer::ResetDDPP()
 
 	m_MoneyTilesMoney = 0;
 	str_copy(m_aTradeOffer, "", sizeof(m_aTradeOffer));
-	str_copy(m_aEscapeReason, "unknown", 16);
+	str_copy(m_aEscapeReason, "неизвестно", 16);
 	m_dmm25 = -1; //set to offline default
 	m_MapSaveLoaded = false;
 
@@ -174,10 +174,10 @@ void CPlayer::SetLanguage(const char *pLang)
 		SetLanguage(LANG_RU);
 	else
 	{
-		GameServer()->SendChatTarget(m_ClientId, "[lang] invalid language pick one of those: en, ru");
+		GameServer()->SendChatTarget(m_ClientId, "[lang] неверный язык, выберите: en, ru");
 		return;
 	}
-	GameServer()->SendChatTarget(m_ClientId, "[lang] language set");
+	GameServer()->SendChatTarget(m_ClientId, "[lang] язык установлен");
 }
 
 void CPlayer::CInputTracker::OnTick(CNetObj_PlayerInput *pInput, int PlayerFlags)
@@ -250,7 +250,7 @@ void CPlayer::DDPPTick()
 		m_Account.m_BombBanTime--;
 		if(m_Account.m_BombBanTime == 1)
 		{
-			GameServer()->SendChatTarget(m_ClientId, "Bomb bantime expired.");
+			GameServer()->SendChatTarget(m_ClientId, "Бан за бомбы истёк.");
 		}
 	}
 
@@ -638,7 +638,7 @@ void CPlayer::JailPlayer(int Seconds)
 		else // no jailplayer
 		{
 			// GetCharacter()->SetPosition(DefaultSpawn); //crashbug for mod stealer
-			GameServer()->SendChatTarget(GetCid(), "No jail set.");
+			GameServer()->SendChatTarget(GetCid(), "Тюрьма не установлена.");
 		}
 	}
 }
@@ -1074,7 +1074,7 @@ void CPlayer::CalcExp()
 
 	if(IsMaxLevel())
 	{
-		GameServer()->SendChatTarget(m_ClientId, "[ACCOUNT] GRATULATIONS !!! you reached the maximum level.");
+		GameServer()->SendChatTarget(m_ClientId, "[АККАУНТ] ПОЗДРАВЛЯЕМ!!! вы достигли максимального уровня.");
 		SetXP(OldNeededXp);
 		// m_neededxp = OldNeededXp; // covered by the 404 else if ACC_MAX_LEVEL is if branch limit if it is less it uses next levels neededxp which doesnt hurt either
 	}
@@ -1094,8 +1094,8 @@ void CPlayer::CheckLevel()
 	{
 		SetLevel(GetLevel() + 1);
 
-		GameServer()->SendChatLoc(m_ClientId, "You are now Level %" PRId64 "!   +50money", GetLevel());
-		MoneyTransaction(+50, "level up");
+		GameServer()->SendChatLoc(m_ClientId, "Теперь ваш уровень %" PRId64 "!   +50 денег", GetLevel());
+		MoneyTransaction(+50, "повышение уровня");
 
 		CalcExp();
 	}
@@ -1138,7 +1138,7 @@ void CPlayer::chidraqul3_GameTick()
 
 	if(g_Config.m_SvAllowChidraqul == 0)
 	{
-		GameServer()->SendChatTarget(m_ClientId, "Admin has disabled chidraqul3.");
+		GameServer()->SendChatTarget(m_ClientId, "Администратор отключил chidraqul3.");
 		m_C3_GameState = false;
 	}
 	else if(g_Config.m_SvAllowChidraqul == 1) //dynamic but resourcy way (doesnt work on linux)
@@ -1212,7 +1212,7 @@ void CPlayer::chidraqul3_GameTick()
 		}
 
 		//add stuff to the print string
-		str_format(aBuf, sizeof(aBuf), "\n\n\n%s\nPos: [%d/%d] Gold: %d", aWorld, m_HashPos, m_HashPosY, m_HashGold);
+		str_format(aBuf, sizeof(aBuf), "\n\n\n%s\nПозиция: [%d/%d] Золото: %d", aWorld, m_HashPos, m_HashPosY, m_HashGold);
 
 		//print all
 		GameServer()->SendBroadcast(aBuf, m_ClientId);
@@ -1294,7 +1294,7 @@ void CPlayer::chidraqul3_GameTick()
 			aWorld[m_HashPos] = m_HashSkin[0];
 			aWorld[g_Config.m_SvChidraqulWorldX] = '\0';
 
-			str_format(aHUD, sizeof(aHUD), "\n\nPos: %d", m_HashPos);
+			str_format(aHUD, sizeof(aHUD), "\n\nПозиция: %d", m_HashPos);
 			str_format(aBuf, sizeof(aBuf), "%s%s", aWorld, aHUD);
 
 			GameServer()->SendBroadcast(aWorld, m_ClientId, 0);
@@ -1310,12 +1310,12 @@ bool CPlayer::JoinMultiplayer()
 {
 	if(GameServer()->C3_GetFreeSlots() > 0)
 	{
-		GameServer()->SendChatTarget(GetCid(), "[chidraqul] joined multiplayer.");
+		GameServer()->SendChatTarget(GetCid(), "[chidraqul] присоединился к мультиплееру.");
 		m_C3_UpdateFrame = true;
 		m_C3_GameState = 2;
 		return true;
 	}
-	GameServer()->SendChatTarget(GetCid(), "[chidraqul] multiplayer is full.");
+	GameServer()->SendChatTarget(GetCid(), "[chidraqul] мультиплеер заполнен.");
 	return false;
 }
 
@@ -1354,11 +1354,11 @@ void CPlayer::GiveBlockPoints(int Points)
 	{
 		if(IsLoggedIn())
 		{
-			str_format(aBuf, sizeof(aBuf), "+%d point%s%s", Points, Points == 1 ? "" : "s", FlagBonus ? " (flag bonus)" : "");
+			str_format(aBuf, sizeof(aBuf), "+%d очк%s%s", Points, Points == 1 ? "о" : "ов", FlagBonus ? " (бонус за флаг)" : "");
 		}
 		else
 		{
-			str_format(aBuf, sizeof(aBuf), "+%d point%s (warning! use '/login' to save your '/points')", Points, Points == 1 ? "" : "s");
+			str_format(aBuf, sizeof(aBuf), "+%d очк%s (внимание! используйте '/login' чтобы сохранить '/points')", Points, Points == 1 ? "о" : "ов");
 		}
 
 		GameServer()->SendChatTarget(GetCid(), aBuf);
@@ -1370,9 +1370,9 @@ void CPlayer::GiveBlockPoints(int Points)
 			// after 5 and 10 unsaved kills and no messages activated --> inform the player about accounts
 			if(m_Account.m_BlockPoints == 5 || m_Account.m_BlockPoints == 10)
 			{
-				str_format(aBuf, sizeof(aBuf), "you made %d unsaved block points. Use '/login' to save your '/points'.", m_Account.m_BlockPoints);
+				str_format(aBuf, sizeof(aBuf), "у вас %d несохранённых block points. Используйте '/login' чтобы сохранить '/points'.", m_Account.m_BlockPoints);
 				GameServer()->SendChatTarget(GetCid(), aBuf);
-				GameServer()->SendChatTarget(GetCid(), "Use '/accountinfo' for more information.");
+				GameServer()->SendChatTarget(GetCid(), "Используйте '/accountinfo' для подробностей.");
 			}
 		}
 	}
