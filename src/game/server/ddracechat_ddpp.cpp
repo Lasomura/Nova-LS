@@ -6177,8 +6177,8 @@ void CGameContext::ConTaser(IConsole::IResult *pResult, void *pUserData)
 		char aBuf[256];
 
 		pSelf->SendChatTarget(pResult->m_ClientId, "~~~ TASER INFO ~~~");
-		pSelf->SendChatTarget(pResult->m_ClientId, "Police with rank 3 or higher are allowed to carry a taser.");
-		pSelf->SendChatTarget(pResult->m_ClientId, "Taser makes rifle freeze players.");
+		pSelf->SendChatTarget(pResult->m_ClientId, "Тайзер может быть куплен в магазине");
+		pSelf->SendChatTarget(pResult->m_ClientId, "Тайзер делает лазер, фризилкой (ес че сам перепишешь)");
 		pSelf->SendChatTarget(pResult->m_ClientId, "~~~ YOUR TASER STATS ~~~");
 		str_format(aBuf, sizeof(aBuf), "TaserLevel: %d/7", pPlayer->m_Account.m_TaserLevel);
 		pSelf->SendChatTarget(pResult->m_ClientId, aBuf);
@@ -6190,7 +6190,7 @@ void CGameContext::ConTaser(IConsole::IResult *pResult, void *pUserData)
 		str_format(aBuf, sizeof(aBuf), "FailRate: %d%%", 0);
 		pSelf->SendChatTarget(pResult->m_ClientId, aBuf);
 		pSelf->SendChatTarget(pResult->m_ClientId, "~~~ TASER COMMANDS ~~~");
-		pSelf->SendChatTarget(pResult->m_ClientId, "'/taser <on/off>' to activate/deactivate it.");
+		pSelf->SendChatTarget(pResult->m_ClientId, "'/taser <on/off>' включить/выключить");
 		//pSelf->SendChatTarget(pResult->m_ClientId, "'/taser <upgrade>' to level up you taser.");
 	}
 	else if(!str_comp_nocase(pResult->GetString(0), "on"))

@@ -174,6 +174,13 @@ void CShop::OnInit()
 		"Дает тебе нидзю.\n",
 		"dead",
 		m_pGameContext));
+	m_vItems.push_back(new CShopItemTaser(
+		"taser",
+		"50 000",
+		1,
+		"Дает тебе тазер.\n",
+		"навсегда",
+		m_pGameContext));
 }
 
 bool CShopItemRainbow::Buy(int ClientId)
@@ -306,7 +313,7 @@ bool CShopItemTaser::Buy(int ClientId)
 		GameServer()->SendChatTarget(ClientId, "Taser already max level.");
 		return false;
 	}
-	if(pPlayer->m_Account.m_PoliceRank < NeededPoliceRank(ClientId))
+	if(NeededPoliceRank(ClientId) > 0 && pPlayer->m_Account.m_PoliceRank < NeededPoliceRank(ClientId))
 	{
 		GameServer()->SendChatTarget(ClientId, "You don't have a weapon license.");
 		return false;
@@ -358,11 +365,17 @@ const char *CShopItemTaser::PriceStr(int ClientId)
 
 int CShopItemTaser::NeededPoliceRank(int ClientId)
 {
-	return 3;
+	return 0;
 }
 
 const char *CShopItemTaser::NeededLevelStr(int ClientId)
 {
+	if(NeededPoliceRank(ClientId) <= 0)
+	{
+		str_copy(m_aNeededPoliceRank, "-", sizeof(m_aNeededPoliceRank));
+		return m_aNeededPoliceRank;
+	}
+	
 	str_format(m_aNeededPoliceRank, sizeof(m_aNeededPoliceRank), "Police[%d]", NeededPoliceRank(ClientId));
 	return m_aNeededPoliceRank;
 }
