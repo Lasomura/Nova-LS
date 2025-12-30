@@ -215,6 +215,14 @@ public:
 	bool Buy(int ClientId) override;
 };
 
+class CShopItemJetpack : public CShopItem
+{
+public:
+	using CShopItem::CShopItem;
+
+	bool Buy(int ClientId) override;
+};
+
 class CShopItemSpawnRifle : public CShopItem
 {
 public:

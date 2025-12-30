@@ -160,6 +160,13 @@ void CShop::OnInit()
 		"Дает тебе лазер.\n",
 		"dead",
 		m_pGameContext));
+	m_vItems.push_back(new CShopItemJetpack(
+		"jetpack",
+		"5 000",
+		5,
+		"Дает тебе джетпак.\n",
+		"dead",
+		m_pGameContext));
 	m_vItems.push_back(new CShopItemNinja(
 		"ninja",
 		"1 000",
@@ -389,6 +396,25 @@ bool CShopItemNinjaJetpack::Buy(int ClientId)
 	pPlayer->m_Account.m_NinjaJetpackBought = true;
 	return true;
 }
+
+bool CShopItemJetpack::Buy(int ClientId)
+{
+	CPlayer *pPlayer = GameServer()->m_apPlayers[ClientId];
+	if(!pPlayer)
+		return false;
+	CCharacter *pChr = pPlayer->GetCharacter();
+	if(!pChr)
+	{
+		GameServer()->SendChatLoc(ClientId, "You have to be alive to buy this item.");
+		return false;
+	}
+	if(!CShopItem::Buy(ClientId))
+		return false;
+	pChr->SetJetpack(true);
+	GameServer()->SendChatTarget(ClientId, "You have a jetpack gun");
+	return true;
+}
+
 
 bool CShopItemSpawnShotgun::Buy(int ClientId)
 {
