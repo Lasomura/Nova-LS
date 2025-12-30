@@ -15,7 +15,7 @@ For building instructions and dependencies please check [ddnet](https://github.c
 But if you have all the dependencies installed this should work.
 
 ```
-git clone --recursive https://github.com/DDNetPP/DDNetPP.git
+git clone --recursive https://github.com/Lasomura/Nova-LS.git
 cd DDNetPP
 mkdir build
 cd build
