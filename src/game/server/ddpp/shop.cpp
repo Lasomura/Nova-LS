@@ -162,7 +162,7 @@ void CShop::OnInit()
 		m_pGameContext));
 	m_vItems.push_back(new CShopItemJetpack(
 		"jetpack",
-		"5 000",
+		"25 000",
 		5,
 		"Дает тебе джетпак.\n",
 		"dead",
