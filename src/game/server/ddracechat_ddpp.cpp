@@ -6178,7 +6178,7 @@ void CGameContext::ConTaser(IConsole::IResult *pResult, void *pUserData)
 
 		pSelf->SendChatTarget(pResult->m_ClientId, "~~~ TASER INFO ~~~");
 		pSelf->SendChatTarget(pResult->m_ClientId, "Тайзер может быть куплен в магазине");
-		pSelf->SendChatTarget(pResult->m_ClientId, "Тайзер делает лазер, фризилкой (ес че сам перепишешь)");
+		pSelf->SendChatTarget(pResult->m_ClientId, "Тайзер делает лазер - фризилкой");
 		pSelf->SendChatTarget(pResult->m_ClientId, "~~~ YOUR TASER STATS ~~~");
 		str_format(aBuf, sizeof(aBuf), "TaserLevel: %d/7", pPlayer->m_Account.m_TaserLevel);
 		pSelf->SendChatTarget(pResult->m_ClientId, aBuf);
