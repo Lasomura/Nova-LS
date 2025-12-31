@@ -123,7 +123,7 @@ void CGameContext::ConEndlessHook(IConsole::IResult *pResult, void *pUserData)
 	if(!CheckClientId(pResult->m_ClientId))
 		return;
 	
-	const int ClientId = pResult->HasVictim() ? pResult->GetVictim() : pResult->m_ClientId;
+	const int ClientId = pResult->GetVictim() ? pResult->GetVictim() : pResult->m_ClientId;
 	CCharacter *pChr = pSelf->GetPlayerChar(ClientId);
 	if(pChr)
 	{
@@ -137,7 +137,7 @@ void CGameContext::ConUnEndlessHook(IConsole::IResult *pResult, void *pUserData)
 	if(!CheckClientId(pResult->m_ClientId))
 		return;
 	
-	const int ClientId = pResult->HasVictim() ? pResult->GetVictim() : pResult->m_ClientId;
+	const int ClientId = pResult->GetVictim() ? pResult->GetVictim() : pResult->m_ClientId;
 	CCharacter *pChr = pSelf->GetPlayerChar(ClientId);
 	if(pChr)
 	{
@@ -151,7 +151,7 @@ void CGameContext::ConSuper(IConsole::IResult *pResult, void *pUserData)
 	if(!CheckClientId(pResult->m_ClientId))
 		return;
 	
-	const int ClientId = pResult->HasVictim() ? pResult->GetVictim() : pResult->m_ClientId;
+	const int ClientId = pResult->GetVictim() ? pResult->GetVictim() : pResult->m_ClientId;
 	CCharacter *pChr = pSelf->GetPlayerChar(ClientId);
 	if(pChr && !pChr->IsSuper())
 	{
@@ -165,7 +165,7 @@ void CGameContext::ConUnSuper(IConsole::IResult *pResult, void *pUserData)
 	CGameContext *pSelf = (CGameContext *)pUserData;
 	if(!CheckClientId(pResult->m_ClientId))
 		return;
-	const int ClientId = pResult->HasVictim() ? pResult->GetVictim() : pResult->m_ClientId;
+	const int ClientId = pResult->GetVictim() ? pResult->GetVictim() : pResult->m_ClientId;
 	CCharacter *pChr = pSelf->GetPlayerChar(ClientId);
 	if(pChr && pChr->IsSuper())
 	{
@@ -287,7 +287,7 @@ void CGameContext::ConLaser(IConsole::IResult *pResult, void *pUserData)
 void CGameContext::ConJetpack(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
-	const int ClientId = pResult->HasVictim() ? pResult->GetVictim() : pResult->m_ClientId;
+	const int ClientId = pResult->GetVictim() ? pResult->GetVictim() : pResult->m_ClientId;
 	CCharacter *pChr = pSelf->GetPlayerChar(ClientId);
 	if(pChr)
 		pChr->SetJetpack(true);
@@ -296,7 +296,7 @@ void CGameContext::ConJetpack(IConsole::IResult *pResult, void *pUserData)
 void CGameContext::ConEndlessJump(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
-	const int ClientId = pResult->HasVictim() ? pResult->GetVictim() : pResult->m_ClientId;
+	const int ClientId = pResult->GetVictim() ? pResult->GetVictim() : pResult->m_ClientId;
 	CCharacter *pChr = pSelf->GetPlayerChar(ClientId);
 	if(pChr)
 		pChr->SetEndlessJump(true);
@@ -305,7 +305,7 @@ void CGameContext::ConEndlessJump(IConsole::IResult *pResult, void *pUserData)
 void CGameContext::ConSetJumps(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
-	const int ClientId = pResult->HasVictim() ? pResult->GetVictim() : pResult->m_ClientId;
+	const int ClientId = pResult->GetVictim() ? pResult->GetVictim() : pResult->m_ClientId;
 	CCharacter *pChr = pSelf->GetPlayerChar(ClientId);
 	if(pChr)
 		pChr->SetJumps(pResult->GetInteger(0));
@@ -338,7 +338,7 @@ void CGameContext::ConUnLaser(IConsole::IResult *pResult, void *pUserData)
 void CGameContext::ConUnJetpack(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
-	const int ClientId = pResult->HasVictim() ? pResult->GetVictim() : pResult->m_ClientId;
+	const int ClientId = pResult->GetVictim() ? pResult->GetVictim() : pResult->m_ClientId;
 	CCharacter *pChr = pSelf->GetPlayerChar(ClientId);
 	if(pChr)
 		pChr->SetJetpack(false);
@@ -347,7 +347,7 @@ void CGameContext::ConUnJetpack(IConsole::IResult *pResult, void *pUserData)
 void CGameContext::ConUnEndlessJump(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
-	const int ClientId = pResult->HasVictim() ? pResult->GetVictim() : pResult->m_ClientId;
+	const int ClientId = pResult->GetVictim() ? pResult->GetVictim() : pResult->m_ClientId;
 	CCharacter *pChr = pSelf->GetPlayerChar(ClientId);
 	if(pChr)
 		pChr->SetEndlessJump(false);
@@ -375,7 +375,7 @@ void CGameContext::ModifyWeapons(IConsole::IResult *pResult, void *pUserData,
 	int Weapon, bool Remove)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
-	const int ClientId = pResult->HasVictim() ? pResult->GetVictim() : pResult->m_ClientId;
+	const int ClientId = pResult->GetVictim() ? pResult->GetVictim() : pResult->m_ClientId;
 	CCharacter *pChr = pSelf->GetPlayerChar(ClientId);
 	if(!pChr)
 		return;
