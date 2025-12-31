@@ -25,9 +25,14 @@ bool CLaser::HitCharacterDDPP(vec2 From, vec2 To, CCharacter *pHit)
 	}
 	else if(m_Type == WEAPON_LASER)
 	{
+		if (pOwnerChar->m_FreezeLaser) {
+			pHit->Freeze();
+			return false;
+		}
+		
 		if(!pOwnerChar)
 		{
-			pHit->UnFreeze();
+			pHit->Freeze();
 			return false;
 		}
 		//quests (before unfreeze to have information about the tee was being frozzn)
