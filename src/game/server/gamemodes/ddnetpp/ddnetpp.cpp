@@ -153,13 +153,11 @@ void CGameControllerDDNetPP::OnPlayerConnect(class CPlayer *pPlayer)
 		}
 		else
 		{
-			char aWelcome[128];
 			char aSubGameType[128];
 			aSubGameType[0] = '\0';
 			if(g_Config.m_SvDDPPgametype[0])
 				str_format(aSubGameType, sizeof(aSubGameType), "(%s) ", g_Config.m_SvDDPPgametype);
-			str_format(aWelcome, sizeof(aWelcome), "DDNet++ %s%s based on DDNet " GAME_RELEASE_VERSION, aSubGameType, DDNETPP_VERSIONSTR);
-			GameServer()->SendChatTarget(ClientId, aWelcome);
+			GameServer()->SendChatTarget(ClientId,"Nova 1.0");
 		}
 	}
 	else
