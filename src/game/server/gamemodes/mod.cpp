@@ -5,8 +5,8 @@
 // Exchange this to a string that identifies your game mode.
 // DM, TDM and CTF are reserved for teeworlds original modes.
 // DDraceNetwork and TestDDraceNetwork are used by DDNet.
-#define GAME_TYPE_NAME "Mod"
-#define TEST_TYPE_NAME "TestMod"
+#define GAME_TYPE_NAME "Nova"
+#define TEST_TYPE_NAME "Nova"
 
 CGameControllerMod::CGameControllerMod(class CGameContext *pGameServer) :
 	IGameController(pGameServer)
