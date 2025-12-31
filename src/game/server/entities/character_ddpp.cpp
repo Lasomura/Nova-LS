@@ -67,6 +67,7 @@ void CCharacter::PostSpawnDDPP()
 	m_Bloody = false;
 	m_Atom = false;
 	m_Trail = false;
+	m_SuperHammer = false;
 
 	m_AliveSince = time_get();
 	if(g_Config.m_SvInstagibMode)
@@ -2898,6 +2899,11 @@ void CCharacter::TakeHammerHit(CCharacter *pFrom)
 		Push.y *= g_Config.m_SvHammerScaleY * 0.01f;
 	}
 
+	if(pFrom && pFrom->m_SuperHammer)
+	{
+		Push *= SuperHammerKnockbackScale;
+	}
+	
 	m_Core.m_Vel += Push;
 }
 

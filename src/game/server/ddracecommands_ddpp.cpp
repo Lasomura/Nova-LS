@@ -162,6 +162,45 @@ void CGameContext::Conheal(IConsole::IResult *pResult, void *pUserData)
 	}
 }
 
+void CGameContext::ConSuperHammer(IConsole::IResult *pResult, void *pUserData)
+{
+	CGameContext *pSelf = (CGameContext *)pUserData;
+	const char *pTarget = pResult->GetString(0);
+
+	if(!str_comp_nocase(pTarget, "all"))
+	{
+		for(int ClientId = 0; ClientId < MAX_CLIENTS; ClientId++)
+		{
+			CCharacter *pChr = pSelf->GetPlayerChar(ClientId);
+			if(!pChr)
+				continue;
+			pChr->m_SuperHammer = true;
+			pChr->SetWeapon(WEAPON_HAMMER);
+			pSelf->SendChatTarget(ClientId, "Супер молоток доступен до смерти");
+		}
+		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "superhammer", "супер молоток активен для всех");
+		return;
+	}
+
+	int Victim = str_toint(pTarget);
+	if(!CheckClientId(Victim))
+	{
+		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "superhammer", "не верынй id");
+		return;
+	}
+
+	CCharacter *pChr = pSelf->GetPlayerChar(Victim);
+	if(!pChr)
+	{
+		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "superhammer", "ошибка, дебаг");
+		return;
+	}
+
+	pChr->m_SuperHammer = true;
+	pChr->SetWeapon(WEAPON_HAMMER);
+	pSelf->SendChatTarget(Victim, "Супер молоток активен до смерти");
+}
+
 void CGameContext::Condummymode(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;

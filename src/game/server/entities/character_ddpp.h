@@ -160,6 +160,8 @@ public:
 	bool SpecialGunProjectile(vec2 Direction, vec2 ProjStartPos, int Lifetime);
 	bool FreezeShotgun(vec2 Direction, vec2 ProjStartPos);
 	bool m_FreezeHammer;
+	bool m_SuperHammer;
+	static constexpr float SuperHammerKnockbackScale = 2.5f;
 
 	/*
 		KillingSpree

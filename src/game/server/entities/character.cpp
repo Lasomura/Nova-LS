@@ -549,6 +549,11 @@ void CCharacter::FireWeapon()
 
 			float Strength = GetTuning(m_TuneZone)->m_HammerStrength;
 
+			if(m_SuperHammer)
+			{
+				Strength *= SuperHammerKnockbackScale;
+			}
+
 			vec2 Temp = pTarget->m_Core.m_Vel + normalize(Dir + vec2(0.f, -1.1f)) * 10.0f;
 			Temp = ClampVel(pTarget->m_MoveRestrictions, Temp);
 			Temp -= pTarget->m_Core.m_Vel;

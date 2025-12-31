@@ -181,6 +181,14 @@ void CShop::OnInit()
 		"Дает тебе тазер.\n",
 		"навсегда",
 		m_pGameContext));
+	m_vItems.push_back(new CShopItemSuperHammer(
+		"superhammer",
+		"50 000",
+		1,
+		"Супер молоток\n"
+		"Усилена отдача\n",
+		"dead",
+		m_pGameContext));
 }
 
 bool CShopItemRainbow::Buy(int ClientId)
@@ -209,6 +217,31 @@ bool CShopItemBloody::Buy(int ClientId)
 	if(!CShopItem::Buy(ClientId))
 		return false;
 	pChr->m_Bloody = true;
+	return true;
+}
+
+
+bool CShopItemSuperHammer::Buy(int ClientId)
+{
+	CPlayer *pPlayer = GameServer()->m_apPlayers[ClientId];
+	if(!pPlayer)
+		return false;
+	CCharacter *pChr = pPlayer->GetCharacter();
+	if(!pChr)
+	{
+		GameServer()->SendChatLoc(ClientId, "You have to be alive to buy this item.");
+		return false;
+	}
+	if(pChr->m_SuperHammer)
+	{
+		GameServer()->SendChatTarget(ClientId, "Super hammer is already active.");
+		return false;
+	}
+	if(!CShopItem::Buy(ClientId))
+		return false;
+	pChr->m_SuperHammer = true;
+	pChr->SetWeapon(WEAPON_HAMMER);
+	GameServer()->SendChatTarget(ClientId, "Super hammer activated until death.");
 	return true;
 }
 
