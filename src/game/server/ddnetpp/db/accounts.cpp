@@ -810,7 +810,7 @@ bool CAccounts::ChangePasswordThread(IDbConnection *pSqlServer, const ISqlData *
 	}
 
 	str_copy(pResult->m_aaMessages[0],
-		"[ACCOUNT] Successfully changed your password.",
+		"[Аккаунт] Ваш пароль был успешно изменен.",
 		sizeof(pResult->m_aaMessages[0]));
 	return true;
 }
@@ -1026,7 +1026,7 @@ bool CAccounts::RegisterThread(IDbConnection *pSqlServer, const ISqlData *pGameD
 	{
 		pResult->SetVariant(CAccountResult::DIRECT);
 		str_copy(pResult->m_aaMessages[0],
-			"[ACCOUNT] Username already exists.",
+			"[Аккаунт] Имя пользователя уже существует.",
 			sizeof(pResult->m_aaMessages[0]));
 	}
 	else
@@ -1078,10 +1078,10 @@ bool CAccounts::RegisterThread(IDbConnection *pSqlServer, const ISqlData *pGameD
 		else
 		{
 			str_copy(pResult->m_aaMessages[0],
-				"[ACCOUNT] Account has been registered", // LOCALIZED IN THE MAIN THREAD
+				"[Аккаунт] Учетная запись была зарегистрирована", // LOCALIZED IN THE MAIN THREAD
 				sizeof(pResult->m_aaMessages[0]));
 			str_copy(pResult->m_aaMessages[1],
-				"[ACCOUNT] Login with: /login <name> <pass>", // LOCALIZED IN THE MAIN THREAD
+				"[Аккаунт] Войдите в аккаунт с помощью: /login <логин> <пароль>", // LOCALIZED IN THE MAIN THREAD
 				sizeof(pResult->m_aaMessages[1]));
 		}
 	}
