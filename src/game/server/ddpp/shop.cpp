@@ -163,13 +163,13 @@ void CShop::OnInit()
 	m_vItems.push_back(new CShopItemJetpack(
 		"jetpack",
 		"25 000",
-		5,
+		15,
 		"Дает тебе джетпак.\n",
 		"dead",
 		m_pGameContext));
 	m_vItems.push_back(new CShopItemNinja(
 		"ninja",
-		"1 000",
+		"5 000",
 		5,
 		"Дает тебе нидзю.\n",
 		"dead",
@@ -177,14 +177,14 @@ void CShop::OnInit()
 	m_vItems.push_back(new CShopItemTaser(
 		"taser",
 		"50 000",
-		1,
+		30,
 		"Дает тебе тазер.\n",
 		"навсегда",
 		m_pGameContext));
 	m_vItems.push_back(new CShopItemSuperHammer(
 		"superhammer",
 		"50 000",
-		1,
+		30,
 		"Супер молоток\n"
 		"Усилена отдача\n",
 		"dead",
