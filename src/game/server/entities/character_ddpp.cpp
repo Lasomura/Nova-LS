@@ -2818,9 +2818,8 @@ bool CCharacter::FireWeaponDDPP(bool &FullAuto)
 			}
 			else
 			{
-				vec2 HitPos;
-				vec2 EndPos = m_Pos + vec2(m_LatestInput.m_TargetX, m_LatestInput.m_TargetY);
-				CCharacter *pTarget = GameServer()->m_World.IntersectCharacter(m_Pos, EndPos, 6.0f, HitPos, this);
+				vec2 CursorPos = m_Pos + vec2(m_LatestInput.m_TargetX, m_LatestInput.m_TargetY);
+				CCharacter *pTarget = GameServer()->m_World.ClosestCharacter(CursorPos, 6.0f, this);
 				if(pTarget && pTarget->IsAlive())
 				{
 					m_TelekinesTargetId = pTarget->GetPlayer()->GetCid();
