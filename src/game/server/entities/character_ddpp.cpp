@@ -763,7 +763,7 @@ void CCharacter::DDPP_Tick()
 		}
 		else
 		{
-			vec2 TargetPos = m_Pos + vec2(m_LatestInput.m_TargetX, m_LatestInput.m_TargetY);
+			vec2 TargetPos = GetPlayer()->m_CameraInfo.ConvertTargetToWorld(m_Pos, vec2(m_LatestInput.m_TargetX, m_LatestInput.m_TargetY));
 			pTarget->SetPosition(TargetPos);
 			pTarget->ResetVelocity();
 			pTarget->ReleaseHook();
@@ -2818,7 +2818,7 @@ bool CCharacter::FireWeaponDDPP(bool &FullAuto)
 			}
 			else
 			{
-				vec2 CursorPos = m_Pos + vec2(m_LatestInput.m_TargetX, m_LatestInput.m_TargetY);
+				vec2 CursorPos = GetPlayer()->m_CameraInfo.ConvertTargetToWorld(m_Pos, vec2(m_LatestInput.m_TargetX, m_LatestInput.m_TargetY));
 				CCharacter *pTarget = GameServer()->m_World.ClosestCharacter(CursorPos, 6.0f, this);
 				if(pTarget && pTarget->IsAlive())
 				{
