@@ -89,5 +89,12 @@ bool CGameContext::AbortKill(int ClientId, CPlayer *pPlayer, CCharacter *pChr)
 		SendChatTarget(ClientId, "[INSTA] You can't suicide in fng games while being frozen.");
 		return true;
 	}
+	
+	if(pChr && pChr->IsTelekinesGrabbed())
+	{
+		SendChatTarget(ClientId, "Вы не можете двигаться пока находитесь в захвате");
+		return true;
+	}
+	
 	return false;
 }

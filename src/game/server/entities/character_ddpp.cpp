@@ -42,6 +42,7 @@ void CCharacter::ConstructDDPP()
 	m_DDPP_Finished = false;
 	m_Telekines = false;
 	m_TelekinesTargetId = -1;
+	m_TelekinesGrabbedBy = -1;
 	//if (g_Config.m_SvInstagibMode)
 	//{
 	//	Teams()->OnCharacterStart(m_pPlayer->GetCid());
@@ -65,6 +66,7 @@ void CCharacter::PostSpawnDDPP()
 	m_isDmg = false;
 	m_Telekines = false;
 	m_TelekinesTargetId = -1;
+	m_TelekinesGrabbedBy = -1;
 
 	// disable finite cosmetics by default
 	m_Rainbow = false;
@@ -702,6 +704,27 @@ int CCharacter::HookingSinceSeconds()
 	return (Server()->Tick() - m_FirstHookAttachTick) / Server()->TickSpeed();
 }
 
+bool CCharacter::IsTelekinesGrabbed()
+{
+	if(m_TelekinesGrabbedBy == -1)
+		return false;
+
+	CCharacter *pGrabber = GameServer()->GetPlayerChar(m_TelekinesGrabbedBy);
+	if(!pGrabber || !pGrabber->IsAlive())
+	{
+		m_TelekinesGrabbedBy = -1;
+		return false;
+	}
+
+	if(!pGrabber->m_Telekines || pGrabber->m_TelekinesTargetId != m_pPlayer->GetCid() || pGrabber->m_Core.m_ActiveWeapon != WEAPON_NINJA)
+	{
+		m_TelekinesGrabbedBy = -1;
+		return false;
+	}
+
+	return true;
+}
+
 void CCharacter::DDPP_Tick()
 {
 	if(g_Config.m_SvOffDDPP)
@@ -744,7 +767,7 @@ void CCharacter::DDPP_Tick()
 			pTarget->SetPosition(TargetPos);
 			pTarget->ResetVelocity();
 			pTarget->ReleaseHook();
-			pTarget->ForceFreeze(1);
+			pTarget->m_TelekinesGrabbedBy = GetPlayer()->GetCid();
 		}
 	}
 
@@ -2795,9 +2818,8 @@ bool CCharacter::FireWeaponDDPP(bool &FullAuto)
 			}
 			else
 			{
-				const float TelekinesReach = 800.0f;
 				vec2 HitPos;
-				vec2 EndPos = m_Pos + Direction * TelekinesReach;
+				vec2 EndPos = m_Pos + vec2(m_LatestInput.m_TargetX, m_LatestInput.m_TargetY);
 				CCharacter *pTarget = GameServer()->m_World.IntersectCharacter(m_Pos, EndPos, 6.0f, HitPos, this);
 				if(pTarget && pTarget->IsAlive())
 				{

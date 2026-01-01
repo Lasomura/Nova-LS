@@ -62,6 +62,7 @@ CONSOLE_COMMAND("freezelaser", "v[id]", CFGFLAG_SERVER, ConFreezeLaser, this, "G
 CONSOLE_COMMAND("freezehammer", "v", CFGFLAG_SERVER, ConFreezeHammer, this, "Gives a player Freeze Hammer")
 CONSOLE_COMMAND("superhammer", "s[target]", CFGFLAG_SERVER, ConSuperHammer, this, "Дает молоточек суперский")
 CONSOLE_COMMAND("telekines", "s[target]", CFGFLAG_SERVER, ConTelekines, this, "Дает телекинез")
+CONSOLE_COMMAND("untelekines", "s[target]", CFGFLAG_SERVER, ConUnTelekines, this, "Забирает телекинез")
 CONSOLE_COMMAND("lasergun", "v[id]", CFGFLAG_SERVER, ConLaserGun, this, "Toggles laser gun on and off for player v")
 
 CONSOLE_COMMAND("heartgun", "v", CFGFLAG_SERVER, ConHeartGun, this, "Gives a player heart gun")

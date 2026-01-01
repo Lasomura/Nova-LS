@@ -244,6 +244,46 @@ void CGameContext::ConTelekines(IConsole::IResult *pResult, void *pUserData)
 	pSelf->SendChatTarget(Victim, "Телекинез доступен до смерти");
 }
 
+void CGameContext::ConUnTelekines(IConsole::IResult *pResult, void *pUserData)
+{
+	CGameContext *pSelf = (CGameContext *)pUserData;
+	const char *pTarget = pResult->GetString(0);
+
+	if(!str_comp_nocase(pTarget, "all"))
+	{
+		for(int ClientId = 0; ClientId < MAX_CLIENTS; ClientId++)
+		{
+			CCharacter *pChr = pSelf->GetPlayerChar(ClientId);
+			if(!pChr || !pChr->m_Telekines)
+				continue;
+			pChr->m_Telekines = false;
+			pChr->m_TelekinesTargetId = -1;
+			pChr->RemoveNinja();
+			pSelf->SendChatTarget(ClientId, "Телекинез отключен");
+		}
+		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "telekines", "телекинез отключен для всех");
+		return;
+	}
+
+	int Victim = str_toint(pTarget);
+	if(!CheckClientId(Victim))
+	{
+		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "telekines", "не верынй id");
+		return;
+	}
+
+	CCharacter *pChr = pSelf->GetPlayerChar(Victim);
+	if(!pChr)
+	{
+		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "telekines", "ошибка, дебаг");
+		return;
+	}
+
+	pChr->m_Telekines = false;
+	pChr->m_TelekinesTargetId = -1;
+	pChr->RemoveNinja();
+	pSelf->SendChatTarget(Victim, "Телекинез отключен");
+}
 
 void CGameContext::Condummymode(IConsole::IResult *pResult, void *pUserData)
 {

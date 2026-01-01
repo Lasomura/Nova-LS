@@ -204,6 +204,8 @@ public:
 	bool m_Fire;
 	bool m_Telekines;
 	int m_TelekinesTargetId;
+	int m_TelekinesGrabbedBy;
+	bool IsTelekinesGrabbed();
 	/*
 		ForceFreeze
 
