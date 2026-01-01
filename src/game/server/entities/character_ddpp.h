@@ -202,6 +202,8 @@ public:
 	bool m_fake_super;
 	bool m_Godmode;
 	bool m_Fire;
+	bool m_Telekines;
+	int m_TelekinesTargetId;
 	/*
 		ForceFreeze
 

@@ -40,6 +40,8 @@ void CCharacter::ConstructDDPP()
 	// variable initializations constructor
 	m_ci_freezetime = 0;
 	m_DDPP_Finished = false;
+	m_Telekines = false;
+	m_TelekinesTargetId = -1;
 	//if (g_Config.m_SvInstagibMode)
 	//{
 	//	Teams()->OnCharacterStart(m_pPlayer->GetCid());
@@ -61,6 +63,8 @@ void CCharacter::PostSpawnDDPP()
 {
 	m_freezeShotgun = false;
 	m_isDmg = false;
+	m_Telekines = false;
+	m_TelekinesTargetId = -1;
 
 	// disable finite cosmetics by default
 	m_Rainbow = false;
@@ -721,6 +725,29 @@ void CCharacter::DDPP_Tick()
 	CosmeticTick();
 
 	m_pPlayer->m_InputTracker.OnTick(&m_Input, m_pPlayer->m_PlayerFlags);
+
+	if(m_TelekinesTargetId != -1 && (!m_Telekines || m_Core.m_ActiveWeapon != WEAPON_NINJA))
+	{
+		m_TelekinesTargetId = -1;
+	}
+
+	if(m_Telekines && m_TelekinesTargetId != -1)
+	{
+		CCharacter *pTarget = GameServer()->GetPlayerChar(m_TelekinesTargetId);
+		if(!pTarget || !pTarget->IsAlive())
+		{
+			m_TelekinesTargetId = -1;
+		}
+		else
+		{
+			vec2 TargetPos = m_Pos + vec2(m_LatestInput.m_TargetX, m_LatestInput.m_TargetY);
+			pTarget->SetPosition(TargetPos);
+			pTarget->ResetVelocity();
+			pTarget->ReleaseHook();
+			pTarget->ForceFreeze(1);
+		}
+	}
+
 
 	for(int i = 0; i < 2; i++)
 	{
@@ -2760,6 +2787,27 @@ bool CCharacter::FireWeaponDDPP(bool &FullAuto)
 
 	case WEAPON_NINJA:
 	{
+		if(m_Telekines)
+		{
+			if(m_TelekinesTargetId != -1)
+			{
+				m_TelekinesTargetId = -1;
+			}
+			else
+			{
+				const float TelekinesReach = 800.0f;
+				vec2 HitPos;
+				vec2 EndPos = m_Pos + Direction * TelekinesReach;
+				CCharacter *pTarget = GameServer()->m_World.IntersectCharacter(m_Pos, EndPos, 6.0f, HitPos, this);
+				if(pTarget && pTarget->IsAlive())
+				{
+					m_TelekinesTargetId = pTarget->GetPlayer()->GetCid();
+				}
+			}
+			IsDDNetPPHit = true;
+			break;
+		}
+		
 		QuestNinja();
 	}
 	break;

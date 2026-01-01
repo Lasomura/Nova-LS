@@ -913,6 +913,7 @@ private:
 	static void ConHeartGun(IConsole::IResult *pResult, void *pUserData);
 
 	static void ConSuperHammer(IConsole::IResult *pResult, void *pUserData);
+	static void ConTelekines(IConsole::IResult *pResult, void *pUserData);
 	static void ConFreezeHammer(IConsole::IResult *pResult, void *pUserData);
 	static void ConLaserGun(IConsole::IResult *pResult, void *pUserData);
 

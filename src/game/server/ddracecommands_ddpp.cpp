@@ -201,6 +201,50 @@ void CGameContext::ConSuperHammer(IConsole::IResult *pResult, void *pUserData)
 	pSelf->SendChatTarget(Victim, "Супер молоток активен до смерти");
 }
 
+void CGameContext::ConTelekines(IConsole::IResult *pResult, void *pUserData)
+{
+	CGameContext *pSelf = (CGameContext *)pUserData;
+	const char *pTarget = pResult->GetString(0);
+
+	if(!str_comp_nocase(pTarget, "all"))
+	{
+		for(int ClientId = 0; ClientId < MAX_CLIENTS; ClientId++)
+		{
+			CCharacter *pChr = pSelf->GetPlayerChar(ClientId);
+			if(!pChr)
+				continue;
+			pChr->m_Telekines = true;
+			pChr->m_TelekinesTargetId = -1;
+			pChr->GiveWeapon(WEAPON_NINJA);
+			pChr->SetWeapon(WEAPON_NINJA);
+			pSelf->SendChatTarget(ClientId, "Телекинез доступен до смерти");
+		}
+		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "telekines", "телекинез активен для всех");
+		return;
+	}
+
+	int Victim = str_toint(pTarget);
+	if(!CheckClientId(Victim))
+	{
+		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "telekines", "не верынй id");
+		return;
+	}
+
+	CCharacter *pChr = pSelf->GetPlayerChar(Victim);
+	if(!pChr)
+	{
+		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "telekines", "ошибка, дебаг");
+		return;
+	}
+
+	pChr->m_Telekines = true;
+	pChr->m_TelekinesTargetId = -1;
+	pChr->GiveWeapon(WEAPON_NINJA);
+	pChr->SetWeapon(WEAPON_NINJA);
+	pSelf->SendChatTarget(Victim, "Телекинез доступен до смерти");
+}
+
+
 void CGameContext::Condummymode(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
