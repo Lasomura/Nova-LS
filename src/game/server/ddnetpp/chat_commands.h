@@ -25,6 +25,8 @@ CHAT_COMMAND("acc_info", "?r[player name]", CFGFLAG_CHAT | CFGFLAG_SERVER, ConAc
 CHAT_COMMAND("stats", "?r", CFGFLAG_CHAT | CFGFLAG_SERVER, ConStats, this, "shows the stats of the player r")
 CHAT_COMMAND("profile", "?sr", CFGFLAG_CHAT | CFGFLAG_SERVER, ConProfile, this, "player profiles more help at '/profile help'")
 CHAT_COMMAND("ascii", "?s?i?r", CFGFLAG_CHAT | CFGFLAG_SERVER, ConAscii, this, "create ascii animations with it")
+CHAT_COMMAND("rainbow", "?s", CFGFLAG_CHAT | CFGFLAG_SERVER, ConRainbow, this, "toggle or accept rainbow cosmetics")
+CHAT_COMMAND("rainbow_hook", "?s", CFGFLAG_CHAT | CFGFLAG_SERVER, ConRainbowHook, this, "enable or disable rainbow hook (VIP)")
 
 
 CHAT_COMMAND("taser", "?s", CFGFLAG_CHAT | CFGFLAG_SERVER, ConTaser, this, "everything about taser")

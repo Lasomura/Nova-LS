@@ -374,6 +374,7 @@ public:
 	void OnTileShop();
 	void OnTileBank();
 	void OnTileRoom();
+	void OnTileVipOnly();
 	void OnTileVipPlusOnly();
 	void OnTileMoney();
 	void OnTileMoneyPolice();

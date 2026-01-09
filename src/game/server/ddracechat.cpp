@@ -2369,7 +2369,36 @@ void CGameContext::ConPracticeWeapons(IConsole::IResult *pResult, void *pUserDat
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
 	if(pSelf->GetPracticeCharacter(pResult))
+	{
 		ConWeapons(pResult, pUserData);
+		return;
+	}
+
+	if(!CheckClientId(pResult->m_ClientId))
+		return;
+
+	CPlayer *pPlayer = pSelf->m_apPlayers[pResult->m_ClientId];
+	if(!pPlayer)
+		return;
+
+	if(!pPlayer->IsVip())
+	{
+		pSelf->SendChatTarget(pResult->m_ClientId, "Missing permission.");
+		return;
+	}
+
+	if(pPlayer->m_NextVipWeaponsTick > pSelf->Server()->Tick())
+	{
+		int SecondsLeft = (pPlayer->m_NextVipWeaponsTick - pSelf->Server()->Tick()) / pSelf->Server()->TickSpeed();
+		char aBuf[128];
+		str_format(aBuf, sizeof(aBuf), "Please wait %d seconds before using /weapons again.", SecondsLeft);
+		pSelf->SendChatTarget(pResult->m_ClientId, aBuf);
+		return;
+	}
+
+	pPlayer->m_NextVipWeaponsTick = pSelf->Server()->Tick() + pSelf->Server()->TickSpeed() * 180;
+	ConWeapons(pResult, pUserData);
+	pSelf->SendChatTarget(pResult->m_ClientId, "You received all weapons. Cooldown: 3 minutes.");
 }
 
 void CGameContext::ConPracticeUnShotgun(IConsole::IResult *pResult, void *pUserData)

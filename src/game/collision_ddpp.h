@@ -5,11 +5,13 @@ class CDDNetPPMoveRestrictionData
 {
 public:
 	bool m_CanEnterVipPlusOnly = false;
+	bool m_CanEnterVipOnly = false;
 	bool m_CanEnterRoom = false;
 
 	// used to print a chat message if we hit the room tile
 	bool m_RoomEnterBlocked = false;
 	bool m_VipPluOnlyEnterBlocked = false;
+	bool m_VipOnlyEnterBlocked = false;
 };
 
 #endif

@@ -1,4 +1,5 @@
 #include <base/log.h>
+#include <base/time.h>
 
 #include <game/server/ddnetpp/db/accounts.h>
 #include <game/server/gamemodes/ddnetpp/ddnetpp.h>
@@ -176,6 +177,46 @@ void CGameControllerDDNetPP::ProcessAccountRconCmdResult(CAccountRconCmdResult &
 			GameServer()->SendChatTarget(pPlayer->GetCid(), aBuf);
 		else
 			log_info("account", "%s", aBuf); // this is for econ
+		break;
+	}
+	case CAccountRconCmdResult::VIP:
+	{
+		char aBuf[512];
+		str_format(aBuf, sizeof(aBuf), "UPDATED VipUntil = %d (account is not logged in)", Result.m_State);
+		for(int i = 0; i < MAX_CLIENTS; i++)
+		{
+			if(!GameServer()->m_apPlayers[i])
+				continue;
+
+			if(GameServer()->m_apPlayers[i]->GetAccId() == Result.m_TargetAccountId)
+			{
+				GameServer()->m_apPlayers[i]->m_Account.m_VipUntil = Result.m_State;
+				char aExpire[64];
+				if(Result.m_State == 0)
+				{
+					GameServer()->SendChatTarget(i, "[ACCOUNT] You are now VIP forever.");
+				}
+				else
+				{
+					str_timestamp_ex(Result.m_State, aExpire, sizeof(aExpire), "%Y-%m-%d");
+					str_format(aBuf, sizeof(aBuf), "[ACCOUNT] You are now VIP until %s.", aExpire);
+					GameServer()->SendChatTarget(i, aBuf);
+				}
+
+				CCharacter *pChr = GameServer()->m_apPlayers[i]->GetCharacter();
+				if(pChr)
+				{
+					pChr->Core()->m_DDNetPP.m_RestrictionData.m_CanEnterVipOnly = GameServer()->m_apPlayers[i]->IsVip();
+				}
+
+				str_format(aBuf, sizeof(aBuf), "UPDATED VipUntil = %d (%d:'%s')", Result.m_State, i, Server()->ClientName(i));
+				break;
+			}
+		}
+		if(pPlayer)
+			GameServer()->SendChatTarget(pPlayer->GetCid(), aBuf);
+		else
+			log_info("account", "%s", aBuf);
 		break;
 	}
 	case CAccountRconCmdResult::DIRECT:

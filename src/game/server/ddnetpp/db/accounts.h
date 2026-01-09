@@ -88,6 +88,7 @@ struct CAccountData
 		m_IsSuperModerator = false;
 		m_IsSupporter = false;
 		m_IsAccFrozen = false;
+		m_VipUntil = -1;
 
 		m_BombGamesPlayed = 0;
 		m_BombGamesWon = 0;
@@ -191,6 +192,7 @@ struct CAccountData
 	bool m_IsSuperModerator;
 	bool m_IsSupporter;
 	bool m_IsAccFrozen;
+	int64_t m_VipUntil;
 
 	int m_BombGamesPlayed;
 	int m_BombGamesWon;
@@ -275,6 +277,7 @@ struct CAccountRconCmdResult : ISqlResult
 		MODERATOR,
 		SUPER_MODERATOR,
 		SUPPORTER,
+		VIP,
 		LOG_ONLY,
 	} m_MessageKind;
 

@@ -21,6 +21,47 @@
 #include <game/server/teams.h>
 #include <game/version.h>
 
+#include <cstdio>
+#include <ctime>
+
+static bool ParseVipDateUtc(const char *pDate, int64_t *pTimestamp)
+{
+	if(!pDate || !pTimestamp)
+		return false;
+	if(!str_comp(pDate, "0"))
+	{
+		*pTimestamp = 0;
+		return true;
+	}
+
+	int Day = 0;
+	int Month = 0;
+	int Year = 0;
+	if(sscanf(pDate, "%d.%d.%d", &Day, &Month, &Year) != 3)
+		return false;
+	if(Day < 1 || Day > 31 || Month < 1 || Month > 12 || Year < 1970)
+		return false;
+
+	std::tm TimeInfo{};
+	TimeInfo.tm_mday = Day;
+	TimeInfo.tm_mon = Month - 1;
+	TimeInfo.tm_year = Year - 1900;
+	TimeInfo.tm_hour = 23;
+	TimeInfo.tm_min = 59;
+	TimeInfo.tm_sec = 59;
+
+#if defined(CONF_FAMILY_WINDOWS)
+	time_t Result = _mkgmtime(&TimeInfo);
+#else
+	time_t Result = timegm(&TimeInfo);
+#endif
+	if(Result < 0)
+		return false;
+
+	*pTimestamp = static_cast<int64_t>(Result);
+	return true;
+}
+
 void CGameContext::ConfreezeShotgun(IConsole::IResult *pResult, void *pUserData)
 {
 	// pSelf = GameContext()
@@ -476,6 +517,51 @@ void CGameContext::ConVerifyPlayer(IConsole::IResult *pResult, void *pUserData)
 	str_format(aBuf, sizeof(aBuf), "player '%s' was human verified by '%s' (force solved all captchas)", pSelf->Server()->ClientName(ClientId), pSelf->Server()->ClientName(pResult->m_ClientId));
 	pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "captcha", aBuf);
 	pPlayer->OnHumanVerify();
+}
+
+void CGameContext::ConGiveVip(IConsole::IResult *pResult, void *pUserData)
+{
+	CGameContext *pSelf = (CGameContext *)pUserData;
+	if(pResult->m_ClientId >= 0 && !CheckClientId(pResult->m_ClientId))
+		return;
+
+	int ClientId = pResult->GetVictim();
+	if(!CheckClientId(ClientId))
+	{
+		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "give_vip", "invalid client id");
+		return;
+	}
+
+	CPlayer *pPlayer = pSelf->m_apPlayers[ClientId];
+	if(!pPlayer)
+	{
+		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "give_vip", "player not found");
+		return;
+	}
+	if(pPlayer->GetAccId() <= 0)
+	{
+		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "give_vip", "player is not logged into a sql account");
+		return;
+	}
+
+	if(pResult->NumArguments() != 2)
+	{
+		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "give_vip", "usage: give_vip <client_id> <dd.mm.yyyy|0>");
+		return;
+	}
+
+	int64_t VipUntil = -1;
+	if(!ParseVipDateUtc(pResult->GetString(1), &VipUntil))
+	{
+		pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "give_vip", "usage: give_vip <client_id> <dd.mm.yyyy|0>");
+		return;
+	}
+
+	pSelf->m_pAccounts->UpdateAccountState(pResult->m_ClientId, pPlayer->GetAccId(), static_cast<int>(VipUntil), CAccountRconCmdResult::VIP, "UPDATE Accounts SET VipUntil = ? WHERE Id = ?;");
+
+	char aBuf[256];
+	str_format(aBuf, sizeof(aBuf), "updated VIP for %d:'%s'", ClientId, pSelf->Server()->ClientName(ClientId));
+	pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "give_vip", aBuf);
 }
 
 // cosmetics

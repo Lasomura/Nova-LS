@@ -49,6 +49,10 @@ void CGameControllerDDNetPP::HandleCharacterTiles(class CCharacter *pChr, int Ma
 	{
 		pChr->OnTileRoom();
 	}
+	if(pChr->Core()->m_DDNetPP.m_RestrictionData.m_VipOnlyEnterBlocked)
+	{
+		pChr->OnTileVipOnly();
+	}
 	if(pChr->Core()->m_DDNetPP.m_RestrictionData.m_VipPluOnlyEnterBlocked)
 	{
 		pChr->OnTileVipPlusOnly();
