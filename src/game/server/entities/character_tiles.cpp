@@ -210,6 +210,17 @@ void CCharacter::OnTileRoom()
 	}
 }
 
+void CCharacter::OnTileVipOnly()
+{
+	Core()->m_DDNetPP.m_RestrictionData.m_VipOnlyEnterBlocked = false;
+
+	if(time_get() > m_NextCantEnterVipRoomMessage)
+	{
+		GameServer()->SendChatTarget(GetPlayer()->GetCid(), "You need VIP to enter this area.");
+		m_NextCantEnterVipRoomMessage = time_get() + time_freq() * 10;
+	}
+}
+
 void CCharacter::OnTileVipPlusOnly()
 {
 	Core()->m_DDNetPP.m_RestrictionData.m_VipPluOnlyEnterBlocked = false;
@@ -389,7 +400,8 @@ void CCharacter::OnTileMoney()
 
 	int XP = 0;
 	int Money = 0;
-	int VIPBonus = 0;
+	int VipMoneyBonus = 0;
+	int VipXpBonus = 0;
 
 	// flag extra xp
 	if(GameServer()->m_pController->HasFlag(this) != -1)
@@ -402,17 +414,24 @@ void CCharacter::OnTileMoney()
 	{
 		XP += 2;
 		Money += 2;
-		VIPBonus = 2; // only for broadcast not used in calculation
+		VipMoneyBonus = 2;
+		VipXpBonus += 2;
 	}
 	// vip get 1 bonus
-	else if(m_pPlayer->m_Account.m_IsModerator)
+	else if(m_pPlayer->IsVip())
 	{
 		XP += 1;
 		Money += 1;
-		VIPBonus = 1; // only for broadcast not used in calculation
+		VipMoneyBonus = 1;
+		VipXpBonus += 1;
 	}
 
 	// tile gain and survival bonus
+	if(m_pPlayer->IsVip())
+	{
+		XP += 2;
+		VipXpBonus += 2;
+	}
 	XP += 1 + m_survivexpvalue;
 	Money += 1;
 
@@ -448,18 +467,18 @@ void CCharacter::OnTileMoney()
 		str_format(aLevel, sizeof(aLevel), "%s [%" PRId64 "]", GameServer()->Loc("Level", m_pPlayer->GetCid()), m_pPlayer->GetLevel());
 
 		// money
-		if(VIPBonus)
+		if(VipMoneyBonus)
 		{
-			str_format(aBuf, sizeof(aBuf), " +%d vip", VIPBonus);
+			str_format(aBuf, sizeof(aBuf), " +%d vip", VipMoneyBonus);
 			str_append(aMoney, aBuf, sizeof(aMoney));
 		}
 
 		// xp
 		if(GameServer()->m_pController->HasFlag(this) != -1)
 			str_append(aXp, " +1 flag", sizeof(aXp));
-		if(VIPBonus)
+		if(VipXpBonus)
 		{
-			str_format(aBuf, sizeof(aBuf), " +%d vip", VIPBonus);
+			str_format(aBuf, sizeof(aBuf), " +%d vip", VipXpBonus);
 			str_append(aXp, aBuf, sizeof(aXp));
 		}
 		if(m_survivexpvalue > 0)
@@ -517,24 +536,32 @@ void CCharacter::OnTileMoneyPolice()
 
 	int XP = 0;
 	int Money = 0;
-	int VIPBonus = 0;
+	int VipMoneyBonus = 0;
+	int VipXpBonus = 0;
 
 	// vip+ get 2 bonus
 	if(m_pPlayer->m_Account.m_IsSuperModerator)
 	{
 		XP += 2;
 		Money += 2;
-		VIPBonus = 2; // only for broadcast not used in calculation
+		VipMoneyBonus = 2;
+		VipXpBonus += 2;
 	}
 	// vip get 1 bonus
-	else if(m_pPlayer->m_Account.m_IsModerator)
+	else if(m_pPlayer->IsVip())
 	{
 		XP += 1;
 		Money += 1;
-		VIPBonus = 1; // only for broadcast not used in calculation
+		VipMoneyBonus = 1;
+		VipXpBonus += 1;
 	}
 
 	// tile gain and survival bonus
+	if(m_pPlayer->IsVip())
+	{
+		XP += 2;
+		VipXpBonus += 2;
+	}
 	XP += 2 + m_survivexpvalue;
 	Money += 1 + m_pPlayer->m_Account.m_PoliceRank;
 
@@ -575,16 +602,16 @@ void CCharacter::OnTileMoneyPolice()
 			str_format(aBuf, sizeof(aBuf), " +%d police", m_pPlayer->m_Account.m_PoliceRank);
 			str_append(aMoney, aBuf, sizeof(aMoney));
 		}
-		if(VIPBonus)
+		if(VipMoneyBonus)
 		{
-			str_format(aBuf, sizeof(aBuf), " +%d vip", VIPBonus);
+			str_format(aBuf, sizeof(aBuf), " +%d vip", VipMoneyBonus);
 			str_append(aMoney, aBuf, sizeof(aMoney));
 		}
 
 		// xp
-		if(VIPBonus)
+		if(VipXpBonus)
 		{
-			str_format(aBuf, sizeof(aBuf), " +%d vip", VIPBonus);
+			str_format(aBuf, sizeof(aBuf), " +%d vip", VipXpBonus);
 			str_append(aXp, aBuf, sizeof(aXp));
 		}
 		if(m_survivexpvalue > 0)
@@ -666,6 +693,8 @@ void CCharacter::OnTileMoneyDouble()
 
 	int Exp = 0;
 	int Money = 0;
+	int VipMoneyBonus = 0;
+	int VipXpBonus = 0;
 
 	// flag extra xp
 	if(GameServer()->m_pController->HasFlag(this) != -1)
@@ -673,8 +702,29 @@ void CCharacter::OnTileMoneyDouble()
 		Exp += 2;
 	}
 
+	// vip bonus
+	if(m_pPlayer->m_Account.m_IsSuperModerator)
+	{
+		Exp += 2;
+		Money += 2;
+		VipMoneyBonus = 2;
+		VipXpBonus += 2;
+	}
+	else if(m_pPlayer->IsVip())
+	{
+		Exp += 1;
+		Money += 1;
+		VipMoneyBonus = 1;
+		VipXpBonus += 1;
+	}
+
 	// tile gain and survival bonus
 	int Survival = (m_survivexpvalue + 1);
+	if(m_pPlayer->IsVip())
+	{
+		Exp += 2;
+		VipXpBonus += 2;
+	}
 	Exp += 2 * Survival;
 	Money += 4;
 
@@ -703,9 +753,21 @@ void CCharacter::OnTileMoneyDouble()
 		str_format(aXp, sizeof(aXp), "XP [%" PRId64 "/%" PRId64 "] +2", m_pPlayer->GetXP(), m_pPlayer->GetNeededXP());
 		str_format(aLevel, sizeof(aLevel), "%s [%" PRId64 "]", GameServer()->Loc("Level", m_pPlayer->GetCid()), m_pPlayer->GetLevel());
 
+		// money
+		if(VipMoneyBonus)
+		{
+			str_format(aBuf, sizeof(aBuf), " +%d vip", VipMoneyBonus);
+			str_append(aMoney, aBuf, sizeof(aMoney));
+		}
+
 		// xp
 		if(GameServer()->m_pController->HasFlag(this) != -1)
 			str_append(aXp, " +2 flag", sizeof(aXp));
+		if(VipXpBonus)
+		{
+			str_format(aBuf, sizeof(aBuf), " +%d vip", VipXpBonus);
+			str_append(aXp, aBuf, sizeof(aXp));
+		}
 		if(m_survivexpvalue > 0)
 		{
 			str_format(aBuf, sizeof(aBuf), " +%d survival", Survival);

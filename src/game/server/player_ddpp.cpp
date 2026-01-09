@@ -5,6 +5,7 @@
 #include "player.h"
 
 #include <base/system.h>
+#include <base/time.h>
 
 #include <engine/shared/config.h>
 #include <engine/shared/ddnetpp/loc.h>
@@ -42,6 +43,19 @@ void CPlayer::ConstructDDPP()
 		m_PendingCaptcha = true;
 		m_PendingJoinMessage = true;
 	}
+}
+
+bool CPlayer::IsVip() const
+{
+	if(m_Account.m_IsSuperModerator)
+		return true;
+	if(m_Account.m_IsModerator)
+		return true;
+	if(m_Account.m_VipUntil == 0)
+		return true;
+	if(m_Account.m_VipUntil < 0)
+		return false;
+	return time_timestamp() < m_Account.m_VipUntil;
 }
 
 void CPlayer::DestructDDPP()
@@ -118,6 +132,7 @@ void CPlayer::ResetDDPP()
 	m_Dummy_nn_time = 0;
 	m_Dummy_nn_latest_fitness = 0.0f;
 	m_Dummy_nn_highest_fitness = 0.0f;
+	m_NextVipWeaponsTick = 0;
 	m_Dummy_nn_latest_Distance = 0.0f;
 	m_Dummy_nn_highest_Distance = 0.0f;
 	m_Dummy_nn_highest_Distance_touched = 0.0f;
@@ -257,6 +272,18 @@ void CPlayer::DDPPTick()
 	if(Server()->Tick() % (Server()->TickSpeed() * 300) == 0)
 		if(IsLoggedIn())
 			Save(1); // SetLoggedIn true
+
+	if(m_Account.m_VipUntil > 0 && Server()->Tick() % Server()->TickSpeed() == 0)
+	{
+		if(time_timestamp() >= m_Account.m_VipUntil)
+		{
+			m_Account.m_VipUntil = -1;
+			GameServer()->SendChatTarget(m_ClientId, "[ACCOUNT] Your VIP has expired.");
+			CCharacter *pChr = GetCharacter();
+			if(pChr)
+				pChr->Core()->m_DDNetPP.m_RestrictionData.m_CanEnterVipOnly = false;
+		}
+	}
 
 	CheckLevel();
 

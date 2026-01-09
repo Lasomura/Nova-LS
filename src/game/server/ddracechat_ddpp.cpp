@@ -171,7 +171,7 @@ void CGameContext::ConSayServer(IConsole::IResult *pResult, void *pUserData)
 	if(!pPlayer)
 		return;
 
-	if(!pPlayer->m_Account.m_IsSuperModerator && !pPlayer->m_Account.m_IsModerator)
+	if(!pPlayer->m_Account.m_IsSuperModerator && !pPlayer->IsVip())
 	{
 		pSelf->SendChatTarget(pResult->m_ClientId, "[SAY] Missing permission.");
 		return;
@@ -2844,6 +2844,20 @@ void CGameContext::ConRainbow(IConsole::IResult *pResult, void *pUserData)
 	if(!pChr)
 		return;
 
+	if(pResult->NumArguments() == 0)
+	{
+		if(pPlayer->IsVip())
+		{
+			pPlayer->m_InfRainbow = true;
+			pSelf->SendChatTarget(pResult->m_ClientId, "Rainbow enabled. Turn it off with '/rainbow off'.");
+		}
+		else
+		{
+			pSelf->SendChatTarget(pResult->m_ClientId, "Invalid. Type '/rainbow <accept/off>'.");
+		}
+		return;
+	}
+
 	if(pResult->NumArguments() != 1)
 	{
 		pSelf->SendChatTarget(pResult->m_ClientId, "Invalid. Type '/rainbow <accept/off>'.");
@@ -2858,6 +2872,17 @@ void CGameContext::ConRainbow(IConsole::IResult *pResult, void *pUserData)
 		pPlayer->GetCharacter()->m_Rainbow = false;
 		pPlayer->m_InfRainbow = false;
 		pSelf->SendChatTarget(pResult->m_ClientId, "Rainbow turned off.");
+	}
+	else if(!str_comp_nocase(aInput, "on"))
+	{
+		if(!pPlayer->IsVip())
+		{
+			pSelf->SendChatTarget(pResult->m_ClientId, "Missing permission.");
+			return;
+		}
+
+		pPlayer->m_InfRainbow = true;
+		pSelf->SendChatTarget(pResult->m_ClientId, "Rainbow enabled. Turn it off with '/rainbow off'.");
 	}
 	else if(!str_comp_nocase(aInput, "accept"))
 	{
@@ -3981,7 +4006,7 @@ void CGameContext::ConGive(IConsole::IResult *pResult, void *pUserData)
 			}
 		}
 	}
-	else if(pPlayer->m_Account.m_IsModerator)
+	else if(pPlayer->IsVip())
 	{
 		if(pResult->NumArguments() == 1) //only item no player --> give it ur self
 		{
@@ -4593,7 +4618,7 @@ void CGameContext::ConBomb(IConsole::IResult *pResult, void *pUserData)
 				//pSelf->Console()->Print(IConsole::OUTPUT_LEVEL_STANDARD, "chatresp", aBuf);
 			}
 		}
-		else if(pPlayer->m_Account.m_IsModerator)
+		else if(pPlayer->IsVip())
 		{
 			int Bantime = pResult->GetInteger(1);
 			char aBanname[32];
@@ -4669,7 +4694,7 @@ void CGameContext::ConBomb(IConsole::IResult *pResult, void *pUserData)
 				pSelf->SendChatTarget(pResult->m_ClientId, aBuf);
 				return;
 			}
-			if(pSelf->Server()->GetAuthedState(BanId) == AUTHED_ADMIN || pSelf->m_apPlayers[BanId]->m_Account.m_IsSuperModerator || pSelf->m_apPlayers[BanId]->m_Account.m_IsModerator)
+			if(pSelf->Server()->GetAuthedState(BanId) == AUTHED_ADMIN || pSelf->m_apPlayers[BanId]->m_Account.m_IsSuperModerator || pSelf->m_apPlayers[BanId]->IsVip())
 			{
 				pSelf->SendChatTarget(pResult->m_ClientId, "Missing permission to kick this player.");
 				return;
@@ -6034,7 +6059,7 @@ void CGameContext::ConHook(IConsole::IResult *pResult, void *pUserData)
 	}
 	else if(!str_comp_nocase(pResult->GetString(0), "rainbow"))
 	{
-		if(pPlayer->m_Account.m_IsSuperModerator || pPlayer->m_Account.m_IsModerator)
+		if(pPlayer->IsVip())
 		{
 			pSelf->SendChatTarget(pResult->m_ClientId, "You got rainbow hook.");
 			pPlayer->m_HookPower = 1;
@@ -6060,6 +6085,37 @@ void CGameContext::ConHook(IConsole::IResult *pResult, void *pUserData)
 	{
 		pSelf->SendChatTarget(pResult->m_ClientId, "Unknown power. Type '/hook' for a list of all powers.");
 	}
+}
+
+void CGameContext::ConRainbowHook(IConsole::IResult *pResult, void *pUserData)
+{
+	CGameContext *pSelf = (CGameContext *)pUserData;
+	if(!CheckClientId(pResult->m_ClientId))
+		return;
+
+	CPlayer *pPlayer = pSelf->m_apPlayers[pResult->m_ClientId];
+	if(!pPlayer)
+		return;
+
+	CCharacter *pChr = pPlayer->GetCharacter();
+	if(!pChr)
+		return;
+
+	if(!pPlayer->IsVip())
+	{
+		pSelf->SendChatTarget(pResult->m_ClientId, "Missing permission.");
+		return;
+	}
+
+	if(pResult->NumArguments() > 0 && !str_comp_nocase(pResult->GetString(0), "off"))
+	{
+		pPlayer->m_HookPower = 0;
+		pSelf->SendChatTarget(pResult->m_ClientId, "Rainbow hook disabled.");
+		return;
+	}
+
+	pPlayer->m_HookPower = 1;
+	pSelf->SendChatTarget(pResult->m_ClientId, "Rainbow hook enabled.");
 }
 
 void CGameContext::ConReport(IConsole::IResult *pResult, void *pUserData)
