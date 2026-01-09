@@ -48,6 +48,7 @@ void CAccountRconCmdResult::SetVariant(Variant v, const CSqlAdminCommandRequest 
 	case MODERATOR:
 	case SUPER_MODERATOR:
 	case SUPPORTER:
+	case VIP:
 	case DIRECT:
 	case ALL:
 		for(auto &aMessage : m_aaMessages)
@@ -215,7 +216,7 @@ bool CAccounts::SaveThread(IDbConnection *pSqlServer, const ISqlData *pGameData,
 		"	ProfileSkype = ?, ProfileYoutube = ?, ProfileEmail = ?, ProfileHomepage = ?, ProfileTwitter = ?,"
 		"	HomingMissiles = ?,"
 		"	BlockPoints = ?, BlockKills = ?, BlockDeaths = ?, BlockSkill = ?,"
-		"	IsModerator = ?, IsSuperModerator = ?, IsSupporter = ?, IsAccFrozen = ?,"
+		"	IsModerator = ?, IsSuperModerator = ?, IsSupporter = ?, IsAccFrozen = ?, VipUntil = ?,"
 		"	BombGamesPlayed = ?, BombGamesWon = ?, BombBanTime = ?,"
 		"	GrenadeKills = ?, GrenadeDeaths = ?, GrenadeSpree = ?,"
 		"	GrenadeShots = ?, GrenadeShotsNoRJ = ?, GrenadeWins = ?,"
@@ -283,6 +284,7 @@ bool CAccounts::SaveThread(IDbConnection *pSqlServer, const ISqlData *pGameData,
 	pSqlServer->BindInt(Index++, pAcc->m_IsSuperModerator);
 	pSqlServer->BindInt(Index++, pAcc->m_IsSupporter);
 	pSqlServer->BindInt(Index++, pAcc->m_IsAccFrozen);
+	pSqlServer->BindInt64(Index++, pAcc->m_VipUntil);
 	pSqlServer->BindInt(Index++, pAcc->m_BombGamesPlayed);
 	pSqlServer->BindInt(Index++, pAcc->m_BombGamesWon);
 	pSqlServer->BindInt(Index++, pAcc->m_BombBanTime);
@@ -364,7 +366,7 @@ bool CAccounts::LoginThread(IDbConnection *pSqlServer, const ISqlData *pGameData
 		"	ProfileSkype, ProfileYoutube, ProfileEmail, ProfileHomepage, ProfileTwitter,"
 		"	HomingMissiles,"
 		"	BlockPoints, BlockKills, BlockDeaths, BlockSkill,"
-		"	IsModerator, IsSuperModerator, IsSupporter, IsAccFrozen,"
+		"	IsModerator, IsSuperModerator, IsSupporter, IsAccFrozen, VipUntil,"
 		"	BombGamesPlayed, BombGamesWon, BombBanTime,"
 		"	GrenadeKills, GrenadeDeaths, GrenadeSpree,"
 		"	GrenadeShots, GrenadeShotsNoRJ, GrenadeWins,"
@@ -455,6 +457,7 @@ bool CAccounts::LoginThread(IDbConnection *pSqlServer, const ISqlData *pGameData
 		pResult->m_Account.m_IsSuperModerator = pSqlServer->GetInt(Index++);
 		pResult->m_Account.m_IsSupporter = pSqlServer->GetInt(Index++);
 		pResult->m_Account.m_IsAccFrozen = pSqlServer->GetInt(Index++);
+		pResult->m_Account.m_VipUntil = pSqlServer->GetInt64(Index++);
 		pResult->m_Account.m_BombGamesPlayed = pSqlServer->GetInt(Index++);
 		pResult->m_Account.m_BombGamesWon = pSqlServer->GetInt(Index++);
 		pResult->m_Account.m_BombBanTime = pSqlServer->GetInt(Index++);
@@ -1165,6 +1168,7 @@ bool CAccounts::CreateTableThread(IDbConnection *pSqlServer, const ISqlData *pGa
 		"  IsSuperModerator		INTEGER			DEFAULT 0,"
 		"  IsSupporter			INTEGER			DEFAULT 0,"
 		"  IsAccFrozen			INTEGER			DEFAULT 0,"
+		"  VipUntil				INTEGER			DEFAULT -1,"
 		"  BombGamesPlayed		INTEGER			DEFAULT 0,"
 		"  BombGamesWon			INTEGER			DEFAULT 0,"
 		"  BombBanTime			INTEGER			DEFAULT 0,"
@@ -1268,6 +1272,25 @@ bool CAccounts::CreateTableThread(IDbConnection *pSqlServer, const ISqlData *pGa
 			pError,
 			ErrorSize);
 	}
+
+	auto AddIntColumnIfMissing = [&](const char *pColumn, int DefaultValue) {
+		char aAlter[256];
+		str_format(aAlter, sizeof(aAlter), "ALTER TABLE %s ADD %s INTEGER DEFAULT %d;", pTableName, pColumn, DefaultValue);
+		if(!pSqlServer->PrepareStatement(aAlter, pError, ErrorSize))
+		{
+			if(pError && ErrorSize > 0)
+				pError[0] = '\0';
+			return;
+		}
+		int NumUpdated = 0;
+		if(!pSqlServer->ExecuteUpdate(&NumUpdated, pError, ErrorSize))
+		{
+			if(pError && ErrorSize > 0)
+				pError[0] = '\0';
+		}
+	};
+
+	AddIntColumnIfMissing("VipUntil", -1);
 
 	return true;
 }

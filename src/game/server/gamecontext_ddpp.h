@@ -879,6 +879,7 @@ private:
 
 	// cosmetics
 	static void ConRainbow(IConsole::IResult *pResult, void *pUserData);
+	static void ConRainbowHook(IConsole::IResult *pResult, void *pUserData);
 	static void ConOldRainbow(IConsole::IResult *pResult, void *pUserData);
 	static void ConInfRainbow(IConsole::IResult *pResult, void *pUserData);
 	static void ConBloody(IConsole::IResult *pResult, void *pUserData);
@@ -996,6 +997,7 @@ private:
 	static void ConGodmode(IConsole::IResult *pResult, void *pUserData);
 	static void ConHidePlayer(IConsole::IResult *pResult, void *pUserData);
 	static void ConVerifyPlayer(IConsole::IResult *pResult, void *pUserData);
+	static void ConGiveVip(IConsole::IResult *pResult, void *pUserData);
 	static void ConReloadSpamfilters(IConsole::IResult *pResult, void *pUserData);
 	static void ConListSpamfilters(IConsole::IResult *pResult, void *pUserData);
 	static void ConAddSpamfilter(IConsole::IResult *pResult, void *pUserData);

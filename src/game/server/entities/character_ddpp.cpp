@@ -158,6 +158,7 @@ void CCharacter::PostSpawnDDPP()
 	}
 
 	Core()->m_DDNetPP.m_RestrictionData.m_CanEnterVipPlusOnly = GetPlayer()->m_Account.m_IsSuperModerator;
+	Core()->m_DDNetPP.m_RestrictionData.m_CanEnterVipOnly = GetPlayer()->IsVip();
 }
 
 void CCharacter::DDPPDDRacePostCoreTick()
@@ -1125,7 +1126,7 @@ void CCharacter::DDPP_FlagTick()
 		}
 
 		// vip get 1 bonus
-		else if(m_pPlayer->m_Account.m_IsModerator)
+		else if(m_pPlayer->IsVip())
 		{
 			m_pPlayer->GiveXP(1);
 			m_pPlayer->MoneyTransaction(+1);

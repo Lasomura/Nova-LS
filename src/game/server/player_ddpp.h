@@ -68,6 +68,7 @@ public:
 	bool IsInstagibMinigame() const;
 	bool IsMaxLevel() { return GetLevel() >= ACC_MAX_LEVEL; }
 	bool IsLoggedIn() { return GetAccId() != 0; } // -1 filebased acc >0 sql id
+	bool IsVip() const;
 	int GetAccId() { return m_Account.m_Id; }
 	void SetAccId(int Id);
 	/*
@@ -107,6 +108,7 @@ public:
 	bool m_IsVanillaDmg;
 	bool m_IsVanillaWeapons; //also used for pickups
 	bool m_IsVanillaCompetitive;
+	int64_t m_NextVipWeaponsTick = 0;
 	// admin cheat to be invisible
 	bool m_IsHiddenTee = false;
 	// bool m_IsGodMode; //no damage (only useful in vanilla or pvp based subgametypes)

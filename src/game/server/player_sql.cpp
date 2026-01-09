@@ -107,6 +107,7 @@ void CPlayer::OnLogin()
 	if(pChr)
 	{
 		pChr->Core()->m_DDNetPP.m_RestrictionData.m_CanEnterVipPlusOnly = m_Account.m_IsSuperModerator;
+		pChr->Core()->m_DDNetPP.m_RestrictionData.m_CanEnterVipOnly = IsVip();
 	}
 }
 

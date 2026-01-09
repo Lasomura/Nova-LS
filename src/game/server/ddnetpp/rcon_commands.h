@@ -73,6 +73,7 @@ CONSOLE_COMMAND("freeze", "v[id] ?i", CFGFLAG_SERVER, ConFreeze, this, "Freezes 
 CONSOLE_COMMAND("godmode", "v[id]", CFGFLAG_SERVER, ConGodmode, this, "gives player i godmode (no damage in instagib)")
 CONSOLE_COMMAND("hide_player", "v[id]", CFGFLAG_SERVER, ConHidePlayer, this, "makes player invisible")
 CONSOLE_COMMAND("verify_player", "v", CFGFLAG_SERVER, ConVerifyPlayer, this, "manually set a targets player human level to max (force solve captcha)")
+CONSOLE_COMMAND("give_vip", "vs", CFGFLAG_SERVER, ConGiveVip, this, "gives vip to a logged in account (date format dd.mm.yyyy UTC, 0=forever)")
 
 CONSOLE_COMMAND("logs", "?s[type]", CFGFLAG_SERVER, ConDDPPLogs, this, "shows ddnet++ logs (types: mastersrv)")
 CONSOLE_COMMAND("reload_spamfilters", "", CFGFLAG_SERVER, ConReloadSpamfilters, this, "reads spamfilters.txt (see also add_spamfilter)")
