@@ -157,7 +157,7 @@ void CGameControllerDDNetPP::OnPlayerConnect(class CPlayer *pPlayer)
 			aSubGameType[0] = '\0';
 			if(g_Config.m_SvDDPPgametype[0])
 				str_format(aSubGameType, sizeof(aSubGameType), "(%s) ", g_Config.m_SvDDPPgametype);
-			GameServer()->SendChatTarget(ClientId,"Nova 1.0");
+			GameServer()->SendChatTarget(ClientId,"Nova 1.1");
 		}
 	}
 	else
