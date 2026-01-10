@@ -182,7 +182,7 @@ void CGameControllerDDNetPP::ProcessAccountRconCmdResult(CAccountRconCmdResult &
 	case CAccountRconCmdResult::VIP:
 	{
 		char aBuf[512];
-		str_format(aBuf, sizeof(aBuf), "UPDATED VipUntil = %d (account is not logged in)", Result.m_State);
+		str_format(aBuf, sizeof(aBuf), "Вип выдан аккаунту %d до %d.", Result.m_TargetAccountId, Result.m_State);
 		for(int i = 0; i < MAX_CLIENTS; i++)
 		{
 			if(!GameServer()->m_apPlayers[i])
@@ -209,7 +209,7 @@ void CGameControllerDDNetPP::ProcessAccountRconCmdResult(CAccountRconCmdResult &
 					pChr->Core()->m_DDNetPP.m_RestrictionData.m_CanEnterVipOnly = GameServer()->m_apPlayers[i]->IsVip();
 				}
 
-				str_format(aBuf, sizeof(aBuf), "UPDATED VipUntil = %d (%d:'%s')", Result.m_State, i, Server()->ClientName(i));
+				str_format(aBuf, sizeof(aBuf), "Вип выдан игроку %s до %d.", Server()->ClientName(i), Result.m_State);
 				break;
 			}
 		}

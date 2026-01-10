@@ -182,6 +182,46 @@ void CGameContext::ConSayServer(IConsole::IResult *pResult, void *pUserData)
 	pSelf->SendChat(-1, TEAM_ALL, aBuf);
 }
 
+void CGameContext::ConVip(IConsole::IResult *pResult, void *pUserData)
+{
+	CGameContext *pSelf = (CGameContext *)pUserData;
+	if(!CheckClientId(pResult->m_ClientId))
+		return;
+
+	CPlayer *pPlayer = pSelf->m_apPlayers[pResult->m_ClientId];
+	if(!pPlayer)
+		return;
+
+	if(pPlayer->IsVip())
+	{
+		char aExpire[64];
+		if(pPlayer->m_Account.m_IsSuperModerator || pPlayer->m_Account.m_IsModerator)
+		{
+			pSelf->SendChatTarget(pResult->m_ClientId, "VIP: да (по роли).");
+			pSelf->SendChatTarget(pResult->m_ClientId, "Срок: бессрочно.");
+		}
+		else if(pPlayer->m_Account.m_VipUntil == 0)
+		{
+			pSelf->SendChatTarget(pResult->m_ClientId, "VIP: да.");
+			pSelf->SendChatTarget(pResult->m_ClientId, "Срок: бессрочно.");
+		}
+		else
+		{
+			str_timestamp_ex(pPlayer->m_Account.m_VipUntil, aExpire, sizeof(aExpire), "%Y-%m-%d %H:%M:%S");
+			char aBuf[128];
+			str_format(aBuf, sizeof(aBuf), "VIP: да. До: %s.", aExpire);
+			pSelf->SendChatTarget(pResult->m_ClientId, aBuf);
+		}
+	}
+	else
+	{
+		pSelf->SendChatTarget(pResult->m_ClientId, "VIP: нет.");
+		pSelf->SendChatTarget(pResult->m_ClientId, "Срок: отсутствует.");
+	}
+
+	pSelf->SendChatTarget(pResult->m_ClientId, "VIP команды: /weapons, /give <rainbow|bloody>, /rainbow on.");
+}
+
 void CGameContext::ConPolicehelper(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;

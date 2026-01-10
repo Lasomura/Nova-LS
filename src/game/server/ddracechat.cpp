@@ -2368,12 +2368,6 @@ void CGameContext::ConPracticeSetJumps(IConsole::IResult *pResult, void *pUserDa
 void CGameContext::ConPracticeWeapons(IConsole::IResult *pResult, void *pUserData)
 {
 	CGameContext *pSelf = (CGameContext *)pUserData;
-	if(pSelf->GetPracticeCharacter(pResult))
-	{
-		ConWeapons(pResult, pUserData);
-		return;
-	}
-
 	if(!CheckClientId(pResult->m_ClientId))
 		return;
 
