@@ -927,6 +927,7 @@ private:
 	static void ConSpawnWeaponsInfo(IConsole::IResult *pResult, void *pUserData);
 
 	//supermod
+	static void ConVip(IConsole::IResult *pResult, void *pUserData);
 	static void ConSayServer(IConsole::IResult *pResult, void *pUserData);
 	static void ConBroadcastServer(IConsole::IResult *pResult, void *pUserData);
 	static void ConLaserText(IConsole::IResult *pResult, void *pUserData);
