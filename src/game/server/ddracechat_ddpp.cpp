@@ -219,7 +219,7 @@ void CGameContext::ConVip(IConsole::IResult *pResult, void *pUserData)
 		pSelf->SendChatTarget(pResult->m_ClientId, "Срок: отсутствует.");
 	}
 
-	pSelf->SendChatTarget(pResult->m_ClientId, "VIP команды: /weapons, /give <rainbow|bloody>, /rainbow on.");
+	pSelf->SendChatTarget(pResult->m_ClientId, "VIP команды: /weapons, /rainbow on, /rainbow_hook");
 }
 
 void CGameContext::ConPolicehelper(IConsole::IResult *pResult, void *pUserData)
